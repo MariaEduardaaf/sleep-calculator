@@ -1,0 +1,24 @@
+---
+// DESIGN-SYSTEM 2.4, 5.1, 5.2: the reading column plus, from 1024px, a 20rem rail with the rail ad and then
+// "On this page". Children of the main column are spaced 48px apart (64px from 1024px).
+import AdSlot from '../components/ui/AdSlot.astro';
+import Toc from '../components/ui/Toc.astro';
+
+export interface TocItem { id: string; label: string }
+interface Props {
+  toc?: TocItem[];
+  adId?: string;
+  class?: string;
+}
+const { toc = [], adId, class: cls } = Astro.props;
+const rail = toc.length > 0 || Boolean(adId);
+---
+<div class:list={['content-layout', rail && 'content-layout--rail', cls]}>
+  <div class="content-layout__main"><slot /></div>
+  {rail && (
+    <div class="content-layout__rail">
+      {adId && <AdSlot variant="rail" id={adId} />}
+      {toc.length > 0 && <Toc items={toc} />}
+    </div>
+  )}
+</div>

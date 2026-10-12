@@ -1,0 +1,29 @@
+---
+// DESIGN-SYSTEM 3.13. Renders from the same array that feeds faqJsonLd(items) (jsonld.ts). An item's optional
+// link only marks words already in the answer, so the visible text and the JSON-LD text stay the same.
+import Icon from './Icon.astro';
+import ExtLink from './ExtLink.astro';
+import type { FaqItem } from './jsonld';
+
+interface Props {
+  items: FaqItem[];
+  class?: string;
+}
+const { items, class: cls } = Astro.props;
+const split = ([, a, link]: FaqItem) => {
+  const at = link ? a.indexOf(link.text) : -1;
+  if (link && at < 0) throw new Error(`Faq: the link text “${link.text}” is not in the answer “${a}”.`);
+  return link ? { before: a.slice(0, at), link, after: a.slice(at + link.text.length) } : { before: a, after: '' };
+};
+---
+<div class:list={['faq', cls]}>
+  {items.map((item) => {
+    const { before, link, after } = split(item);
+    return (
+      <details class="disclosure">
+        <summary class="disclosure__summary"><span class="disclosure__label">{item[0]}</span><Icon name="chevron-down" class="disclosure__chevron" /></summary>
+        <div class="disclosure__body"><p>{before}{link && (link.href.startsWith('/') ? <a href={link.href}>{link.text}</a> : <ExtLink href={link.href}>{link.text}</ExtLink>)}{after}</p></div>
+      </details>
+    );
+  })}
+</div>

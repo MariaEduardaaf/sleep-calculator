@@ -1,0 +1,91 @@
+---
+// site-pages 8.3. A draft that states only what the code does. Legal review is a launch step.
+import ContentPage from '../layouts/ContentPage.astro';
+import PrototypeNotice from '../components/ui/PrototypeNotice.astro';
+import ExtLink from '../components/ui/ExtLink.astro';
+import { SITE } from '../site';
+
+const toc = [
+  { id: 'short', label: 'The short version' },
+  { id: 'device', label: 'Data saved on your device' },
+  { id: 'maps', label: 'Calendar links' },
+  { id: 'ads', label: 'Ads and cookies' },
+  { id: 'choices', label: 'Your privacy choices' },
+  { id: 'logs', label: 'Server logs' },
+  { id: 'analytics', label: 'Analytics' },
+  { id: 'children', label: 'Children' },
+  { id: 'changes', label: 'Changes to this policy' },
+  { id: 'contact', label: 'Contact' },
+];
+const H = Object.fromEntries(toc.map((t) => [t.id, t.label])); // headings and "On this page" share one list
+---
+<ContentPage
+  title={`Privacy Policy | ${SITE.name}`}
+  description={`What data ${SITE.name} uses, where it goes, and your choices. No accounts; your settings stay on your device.`}
+  path="/privacy/"
+  h1="Privacy policy"
+  lede={`${SITE.name} doesn’t ask who you are. This page explains what little data is involved and where it goes.`}
+  updated="2026-10-12"
+  toc={toc}
+>
+  <PrototypeNotice text="this policy is a draft, pending the owner’s legal review." />
+
+  <section class="section prose" aria-labelledby="short">
+    <h2 id="short">{H.short}</h2>
+    <ul>
+      <li>No accounts. We don’t ask for your name or email to use the tools.</li>
+      <li>Your fine-tune settings are saved in your browser, on this device.</li>
+      <li>Ads from Google, when we show them, may use cookies. You can choose how.</li>
+    </ul>
+  </section>
+
+
+  <section class="section prose" aria-labelledby="device">
+    <h2 id="device">{H.device}</h2>
+    <p>The sleep and nap calculators save your fine-tune settings in your browser’s local storage. They don’t leave your device. Clearing this site’s data in your browser removes them.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="maps">
+    <h2 id="maps">{H.maps}</h2>
+    <p>Add to calendar makes the calendar file in your browser; nothing is sent to us. The Google Calendar link opens Google’s site, which has its own privacy policy.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="ads">
+    <h2 id="ads">{H.ads}</h2>
+    <p>To keep the tools free, we {SITE.ads ? 'show' : 'plan to show'} ads from Google AdSense. Google and its partners may use cookies to show ads based on your visits to this and other sites. You can turn off personalized ads in <ExtLink href="https://adssettings.google.com/">Google’s Ad Settings</ExtLink> and read <ExtLink href="https://policies.google.com/technologies/partner-sites">how Google uses information from sites that use its services</ExtLink>. When ads are live, we’ll show a consent message where the law requires one.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="choices">
+    <h2 id="choices">{H.choices}</h2>
+    <p>When ads are live, you can review and change your ad and cookie choices here.</p>
+    {!SITE.ads && <PrototypeNotice text="the privacy choices control from Google’s consent tool goes here when ads are switched on." />}
+  </section>
+
+  <section class="section prose" aria-labelledby="logs">
+    <h2 id="logs">{H.logs}</h2>
+    <p>{SITE.host ? `Our host, ${SITE.host}, keeps` : 'Our host keeps'} standard server logs, such as IP addresses, browser types and the pages requested, to keep the site secure and running.</p>
+    {!SITE.host && <PrototypeNotice text="the hosting provider’s name goes here before launch." />}
+  </section>
+
+  <section class="section prose" aria-labelledby="analytics">
+    <h2 id="analytics">{H.analytics}</h2>
+    <p>We don’t use analytics on this site today. If we add them, this page will say so before they start.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="children">
+    <h2 id="children">{H.children}</h2>
+    <p>{SITE.name} is for a general audience and isn’t directed at children under 13.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="changes">
+    <h2 id="changes">{H.changes}</h2>
+    <p>When this page changes, we update the date at the top.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="contact">
+    <h2 id="contact">{H.contact}</h2>
+    {SITE.contactEmail
+      ? <p>Questions about privacy? Email <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.</p>
+      : <PrototypeNotice text="the contact email goes here before launch." />}
+  </section>
+</ContentPage>

@@ -1,0 +1,50 @@
+---
+// DESIGN-SYSTEM 3.26. Groups are labeled navs whose titles are Label-role text, not headings.
+import Logo from './Logo.astro';
+import PrototypeNotice from '../ui/PrototypeNotice.astro';
+import { SITE, SIBLINGS } from '../../site';
+
+interface Props {
+  prototypeNotice?: string;
+}
+const { prototypeNotice } = Astro.props;
+
+const groups = [
+  { id: 'footer-tool', title: 'Calculators', links: [
+    { label: 'Sleep calculator', href: '/' },
+    { label: 'Nap calculator', href: '/nap/' },
+  ] },
+  { id: 'footer-about', title: 'About', links: [
+    { label: `About ${SITE.name}`, href: '/about/' },
+    { label: 'How it works', href: '/method/' },
+    { label: 'Contact', href: '/contact/' },
+    { label: 'Privacy', href: '/privacy/' },
+    { label: 'Terms', href: '/terms/' },
+    { label: 'Accessibility', href: '/accessibility/' },
+    { label: 'Privacy choices', href: '/privacy/#choices' },
+  ] },
+  // The sibling projects, once their URLs are filled in src/site.ts.
+  ...(SIBLINGS.length ? [{ id: 'footer-more', title: 'More free tools', links: SIBLINGS.map((s) => ({ label: s.title, href: s.href })) }] : []),
+];
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <Logo as="div" />
+        <p class="site-footer__tagline">{SITE.tagline}</p>
+      </div>
+      {groups.map((g) => (
+        <nav class="site-footer__group" aria-labelledby={g.id}>
+          <p class="label" id={g.id}>{g.title}</p>
+          <ul>{g.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+        </nav>
+      ))}
+    </div>
+    <div class="site-footer__legal">
+      <p>© {year} {SITE.name}</p>
+      {prototypeNotice && <PrototypeNotice text={prototypeNotice} />}
+    </div>
+  </div>
+</footer>

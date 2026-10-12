@@ -1,0 +1,11 @@
+---
+// DESIGN-SYSTEM 3.25. A reserved, polite line next to the control that caused it. Fill it with
+// setStatus(el, tone, text, action?) from status.ts. The slot is the server-rendered text, if any.
+interface Props {
+  id: string;
+  tone?: 'info' | 'success' | 'error';
+  class?: string;
+}
+const { id, tone, class: cls } = Astro.props;
+---
+<p class:list={['status', tone && `status--${tone}`, cls]} id={id} role="status"><slot /></p>

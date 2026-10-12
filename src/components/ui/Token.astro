@@ -1,0 +1,16 @@
+---
+// DESIGN-SYSTEM 3.8. Rendered by client code in practice; the class contract is what matters.
+import Icon from './Icon.astro';
+
+interface Props {
+  label: string;
+  /** "Remove onion", "Remove filter: without mushroom" */
+  ariaLabel: string;
+  exclude?: boolean;
+  class?: string;
+}
+const { label, ariaLabel, exclude = false, class: cls } = Astro.props;
+---
+<button class:list={['token', exclude && 'token--exclude', cls]} type="button" aria-label={ariaLabel}>
+  {exclude && <Icon name="ban" size={16} />}<span>{label}</span><Icon name="x" size={16} />
+</button>

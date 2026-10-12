@@ -1,0 +1,13 @@
+---
+// DESIGN-SYSTEM 3.33. The exact size and radius of what it replaces; no animation, never placeholder text.
+interface Props {
+  width: string;
+  height: string;
+  /** A radius token, e.g. "var(--r-md)" (the default). */
+  radius?: string;
+  night?: boolean;
+  class?: string;
+}
+const { width, height, radius = 'var(--r-md)', night = false, class: cls } = Astro.props;
+---
+<span class:list={['skeleton', night && 'skeleton--night', cls]} aria-hidden="true" style={{ width, height, borderRadius: radius }}></span>

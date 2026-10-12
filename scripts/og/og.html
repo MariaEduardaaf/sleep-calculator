@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- Source for public/og-default.png (1200x630) and public/apple-touch-icon.png (180x180, open with #touch). Not shipped.
+     Render after a build (the font is the build's Public Sans file), from the project root:
+       chrome-headless-shell --headless --hide-scrollbars --window-size=1200,630 --screenshot=public/og-default.png file://$PWD/scripts/og/og.html
+       chrome-headless-shell --headless --hide-scrollbars --window-size=180,180 --screenshot=public/apple-touch-icon.png "file://$PWD/scripts/og/og.html#touch"
+     Icon paths from Lucide (ISC), as in src/components/ui/icons.ts. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../src/styles/tokens.css">
+<style>
+  @font-face { font-family: "Public Sans"; src: url("../../dist/_astro/fonts/5aeea5055500fab9.woff2") format("woff2"); font-weight: 400 700; }
+  :root { --font-sans: "Public Sans"; color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 100%; height: 100%; background: var(--bg); color: var(--ink); font-family: var(--font-sans-stack); -webkit-font-smoothing: antialiased; }
+  .og { position: relative; width: 1200px; height: 630px; padding: 80px; }
+  .lockup { display: flex; align-items: center; gap: 20px; }
+  .lockup svg { width: 72px; height: 72px; }
+  .word { font-size: 52px; line-height: 72px; font-weight: 700; letter-spacing: -0.01em; }
+  .tagline { margin-top: 56px; max-width: 900px; font-size: 40px; line-height: 52px; font-weight: 400; color: var(--muted); }
+  .promise { position: absolute; left: 80px; bottom: 80px; font-size: 28px; line-height: 36px; font-weight: 700; color: var(--action); }
+  .plate { fill: var(--action); } .stroke { stroke: var(--on-action); }
+  .touch { display: none; }
+  body:has(.touch:target) .touch { display: block; }
+  body:has(.touch:target) .og { display: none; }
+  .touch svg { display: block; width: 180px; height: 180px; }
+</style>
+</head>
+<body>
+  <div class="og">
+    <div class="lockup"><svg viewBox="0 0 32 32" aria-hidden="true"><rect class="plate" width="32" height="32" rx="8"/><g transform="translate(6 6) scale(0.8333)" fill="none" class="stroke" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></g></svg><span class="word">Bedtime Calculator</span></div>
+    <p class="tagline">Bedtimes and wake-up times that end a full sleep cycle.</p>
+    <p class="promise">Free. No account, no app.</p>
+  </div>
+  <div class="touch" id="touch"><svg viewBox="0 0 32 32" aria-hidden="true"><rect class="plate" width="32" height="32"/><g transform="translate(6 6) scale(0.8333)" fill="none" class="stroke" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></g></svg></div>
+</body>
+</html>

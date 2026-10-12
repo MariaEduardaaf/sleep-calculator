@@ -1,0 +1,15 @@
+---
+// DESIGN-SYSTEM 3.15, the only tab-like UI (plain links, no ARIA tabs). data-label reserves the bold width.
+export interface SubNavItem { label: string; href: string; current: boolean }
+interface Props {
+  label: string;
+  items: SubNavItem[];
+  class?: string;
+}
+const { label, items, class: cls } = Astro.props;
+---
+<nav class:list={['subnav', cls]} aria-label={label}>
+  <ul>
+    {items.map((i) => <li><a href={i.href} aria-current={i.current ? 'page' : undefined} data-label={i.label}>{i.label}</a></li>)}
+  </ul>
+</nav>

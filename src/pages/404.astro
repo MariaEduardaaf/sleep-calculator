@@ -1,0 +1,37 @@
+---
+// site-pages 8.7. The host serves dist/404.html for unknown routes. noindex and no canonical; no breadcrumbs or
+// BreadcrumbList (DESIGN-SYSTEM 3.20), no ads, no current header item.
+import Base from '../layouts/Base.astro';
+import Tile from '../components/ui/Tile.astro';
+import LinkRow from '../components/ui/LinkRow.astro';
+import type { IconName } from '../components/ui/icons';
+import { SITE } from '../site';
+
+const rows: { icon: IconName; title: string; line: string; href: string }[] = [
+  { icon: 'moon', title: 'Sleep calculator', line: 'Bedtimes and wake-up times that end a full sleep cycle.', href: '/' },
+  { icon: 'alarm-clock', title: 'Nap calculator', line: 'Wake up from a nap at the right time.', href: '/nap/' },
+];
+---
+<Base
+  title={`Page Not Found | ${SITE.name}`}
+  description="The page you asked for isn’t here. Try the sleep calculator or the nap calculator."
+  path="/404"
+  noindex
+>
+  <div class="container notfound">
+    <Tile icon="signpost" size="md" tone="neutral" />
+    <h1>We can’t find that page</h1>
+    <p class="lede">The link may be old, or the address may have a typo. Try one of the calculators:</p>
+    <ul class="linkrows notfound__rows">{rows.map((r) => <li><LinkRow {...r} /></li>)}</ul>
+    <p class="notfound__home"><a class="hit" href="/">Go to the sleep calculator</a></p>
+  </div>
+</Base>
+
+<style is:global>
+  /* EmptyState-style header, one column at most 40rem, left aligned (site-pages 6). */
+  .notfound > * { max-width: var(--measure); }
+  .notfound > .tile { display: grid; margin-bottom: var(--space-3); }
+  .notfound > h1 + .lede { margin-top: var(--space-2); }
+  .notfound__rows { margin-top: var(--space-5); }
+  .notfound__home { margin-top: var(--space-5); }
+</style>

@@ -1,0 +1,13 @@
+---
+// DESIGN-SYSTEM 3.9. Always text plus glyph; the glyph is the status shape (CRAFT-10).
+import { statusShape } from './icons';
+
+interface Props {
+  tone: 'good' | 'caution' | 'neutral' | 'highlight';
+  text: string;
+  class?: string;
+}
+const { tone, text, class: cls } = Astro.props;
+const SHAPE = { good: 'free', caution: 'customers', neutral: 'unknown' } as const;
+---
+<span class:list={['badge', `badge--${tone}`, cls]}>{tone !== 'highlight' && <Fragment set:html={statusShape(SHAPE[tone], 16)} />}{text}</span>

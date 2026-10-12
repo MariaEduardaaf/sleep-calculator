@@ -1,0 +1,18 @@
+---
+// DESIGN-SYSTEM 3.2. Only for sheet, dialog and place-card close, number steppers and the restyled map zoom.
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+interface Props extends HTMLAttributes<'button'> {
+  icon: IconName;
+  /** Required accessible name: the action, and the object when it is ambiguous ("Close", "Shorter cycle"). */
+  label: string;
+  size?: 'sm' | 'md';
+  quiet?: boolean;
+}
+const { icon, label, size = 'sm', quiet = false, class: cls, ...rest } = Astro.props;
+---
+<button class:list={['icon-btn', size === 'md' && 'icon-btn--md', quiet && 'icon-btn--quiet', cls]} type="button" aria-label={label} {...rest}>
+  <Icon name={icon} />
+</button>

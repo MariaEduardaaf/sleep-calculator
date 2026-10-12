@@ -1,0 +1,10 @@
+// Cloudflare deploy for the static build: `pnpm build && npx wrangler deploy`.
+{
+  "name": "sleep-calculator",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

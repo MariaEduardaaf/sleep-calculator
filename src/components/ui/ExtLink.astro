@@ -1,0 +1,13 @@
+---
+// DESIGN-SYSTEM 4.5: an inline link to another site inside running text. New tab, rel="noopener", the
+// external-link icon and hidden "opens {domain} in a new tab". Internal links never use it.
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  class?: string;
+}
+const { href, class: cls } = Astro.props;
+const host = new URL(href).hostname.replace(/^www\./, '');
+---
+<a class:list={['extlink', cls]} href={href} target="_blank" rel="noopener"><slot /><span class="sr-only">, opens {host} in a new tab</span><Icon name="external-link" size={16} /></a>

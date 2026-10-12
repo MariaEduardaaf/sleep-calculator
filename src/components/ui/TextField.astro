@@ -1,0 +1,48 @@
+---
+// DESIGN-SYSTEM 3.3. Label always visible; hint below; the error replaces the hint visually and stays first
+// in aria-describedby. `time` makes the 56px TimeField. Extra attributes go to the <input>.
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+interface Props extends Omit<HTMLAttributes<'input'>, 'type' | 'id' | 'class'> {
+  id: string;
+  label: string;
+  type?: 'text' | 'search' | 'email' | 'time' | 'number' | 'url' | 'tel';
+  hint?: string;
+  placeholder?: string;
+  icon?: IconName;
+  value?: string;
+  inputmode?: HTMLAttributes<'input'>['inputmode'];
+  autocomplete?: HTMLAttributes<'input'>['autocomplete'];
+  time?: boolean;
+  /** Server-rendered error text (shows the invalid state). Client code toggles the same element. */
+  error?: string;
+  class?: string;
+}
+const { id, label, type, hint, placeholder, icon, value, inputmode, autocomplete, time = false, error, class: cls, ...rest } = Astro.props;
+const describedby = [`${id}-error`, hint && `${id}-hint`].filter(Boolean).join(' ');
+---
+<div class:list={['field', time && 'field--time', cls]}>
+  <label class="field__label" for={id}>{label}</label>
+  <div class="field__row">
+    <div class="field__control">
+      {icon && <Icon name={icon} class="field__icon" />}
+      <input
+        class:list={['input', icon && 'input--icon', time && 'input--time']}
+        id={id}
+        type={time ? 'time' : (type ?? 'text')}
+        value={value}
+        placeholder={placeholder}
+        inputmode={inputmode}
+        autocomplete={autocomplete}
+        aria-describedby={describedby}
+        aria-invalid={error ? 'true' : undefined}
+        {...rest}
+      />
+    </div>
+    <slot name="after" />
+  </div>
+  {hint && <p class="field__hint" id={`${id}-hint`}>{hint}</p>}
+  <p class="field__error" id={`${id}-error`} hidden={!error}><Icon name="circle-alert" size={16} /><span>{error}</span></p>
+</div>

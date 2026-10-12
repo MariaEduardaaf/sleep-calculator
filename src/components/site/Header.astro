@@ -1,0 +1,22 @@
+---
+// DESIGN-SYSTEM 3.27. One row on every page; the header is also the mobile navigation (no hamburger).
+import Logo from './Logo.astro';
+
+interface Props {
+  path: string;
+}
+const { path } = Astro.props;
+const NAV = [
+  { href: '/method/', label: 'How it works' },
+  { href: '/about/', label: 'About' },
+];
+---
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="container site-header__bar">
+    <Logo />
+    <nav class="nav" aria-label="Site">
+      {NAV.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined} data-label={n.label}>{n.label}</a>)}
+    </nav>
+  </div>
+</header>

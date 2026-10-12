@@ -1,0 +1,21 @@
+---
+// DESIGN-SYSTEM 3.24. Neutral pictogram tile, the spec's specific copy, one way to continue (slot "actions").
+import Tile from './Tile.astro';
+import type { IconName } from './icons';
+
+interface Props {
+  icon: IconName;
+  title: string;
+  body: string;
+  level?: 2 | 3;
+  class?: string;
+}
+const { icon, title, body, level = 3, class: cls } = Astro.props;
+const H = level === 2 ? 'h2' : 'h3';
+---
+<div class:list={['empty', cls]}>
+  <Tile icon={icon} size="md" tone="neutral" />
+  <H class="empty__title">{title}</H>
+  <p class="empty__body">{body}</p>
+  {Astro.slots.has('actions') && <div class="empty__actions"><slot name="actions" /></div>}
+</div>

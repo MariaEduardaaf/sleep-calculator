@@ -1,0 +1,17 @@
+---
+// DESIGN-SYSTEM 3.10, entry card: the whole card is one link. Lines go in the slot
+// (<p class="card__line"> 17/24, <p class="card__meta"> 14/20).
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  external?: boolean;
+  class?: string;
+}
+const { href, title, external = false, class: cls } = Astro.props;
+---
+<a class:list={['card', cls]} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+  <h3 class="card__title">{title}{external && <><span class="sr-only">, opens in a new tab</span><Icon name="external-link" size={16} /></>}</h3>
+  <slot />
+</a>

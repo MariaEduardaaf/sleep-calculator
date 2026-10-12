@@ -1,0 +1,66 @@
+---
+// site-pages 8.4. A draft; legal review is a launch step (BUILD-PLAN 6).
+import ContentPage from '../layouts/ContentPage.astro';
+import PrototypeNotice from '../components/ui/PrototypeNotice.astro';
+import { SITE } from '../site';
+
+const toc = [
+  { id: 'using', label: `Using ${SITE.name}` },
+  { id: 'advice', label: 'Information, not advice' },
+  { id: 'data', label: 'Data from others' },
+  { id: 'links', label: 'Links to other sites' },
+  { id: 'warranty', label: 'No warranty' },
+  { id: 'changes', label: 'Changes' },
+  { id: 'contact', label: 'Contact' },
+];
+const H = Object.fromEntries(toc.map((t) => [t.id, t.label])); // headings and "On this page" share one list
+---
+<ContentPage
+  title={`Terms of Use | ${SITE.name}`}
+  description={`The rules for using ${SITE.name}: free for personal use, and information, not medical advice.`}
+  path="/terms/"
+  h1="Terms of use"
+  lede="In short: the tools are free, the answers are a starting point, and other sites have their own rules."
+  updated="2026-10-12"
+  toc={toc}
+>
+  <PrototypeNotice text="these terms are a draft, pending the owner’s legal review." />
+
+  <section class="section prose" aria-labelledby="using">
+    <h2 id="using">{H.using}</h2>
+    <p>You can use the tools for free, for personal use, without an account. Please don’t copy the site or its data in bulk with automated tools, or try to break or overload it.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="advice">
+    <h2 id="advice">{H.advice}</h2>
+    <p>The sleep and nap calculators do simple arithmetic and aren’t medical advice. If you have trouble sleeping, talk to a doctor.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="data">
+    <h2 id="data">{H.data}</h2>
+    <p>The bedtimes come from the sources listed on <a href="/method/">How it works</a>. Sleep varies from person to person, so treat every time as a starting point.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="links">
+    <h2 id="links">{H.links}</h2>
+    <p>Calendar links lead to other sites. We don’t control them and aren’t responsible for their content or policies.</p>
+  </section>
+
+
+  <section class="section prose" aria-labelledby="warranty">
+    <h2 id="warranty">{H.warranty}</h2>
+    <p>{SITE.name} is provided as is, without warranties of any kind. As far as the law allows, we aren’t liable for losses that come from using the tools.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="changes">
+    <h2 id="changes">{H.changes}</h2>
+    <p>We may update these terms; the date at the top shows the current version.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="contact">
+    <h2 id="contact">{H.contact}</h2>
+    {SITE.contactEmail
+      ? <p>Questions about these terms? Email <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.</p>
+      : <PrototypeNotice text="the contact email goes here before launch." />}
+  </section>
+</ContentPage>

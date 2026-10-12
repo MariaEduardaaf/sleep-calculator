@@ -1,0 +1,53 @@
+---
+// DESIGN-SYSTEM 3.7. One family of small rounded controls. `pressed` is the on state: aria-pressed for a
+// toggle, aria-expanded for a disclosure. Toggles carry plus and check (CSS shows one, so nothing reflows).
+// `shape` gives a radio chip its leading status glyph.
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+import { statusShape, type IconName, type Status } from './icons';
+
+interface Props extends HTMLAttributes<'button'> {
+  kind: 'toggle' | 'radio' | 'action' | 'link' | 'disclosure';
+  label: string;
+  href?: string;
+  count?: number;
+  /** Read after the count by screen readers only ("22" reads "22 places"). */
+  countUnit?: string;
+  icon?: IconName;
+  shape?: Status;
+  pressed?: boolean;
+  name?: string;
+  value?: string;
+  checked?: boolean;
+  controls?: string;
+}
+const { kind, label, href, count, countUnit, icon, shape, pressed = false, name, value, checked, controls, class: cls, disabled, ...rest } = Astro.props;
+const leading = kind === 'toggle' || Boolean(icon || shape);
+const classes = ['chip', kind === 'link' && 'chip--link', leading && 'chip--lead', kind === 'disclosure' && 'chip--trail', cls];
+---
+{kind === 'link' ? (
+  <a class:list={classes} href={href} {...rest as HTMLAttributes<'a'>}>
+    {icon && <Icon name={icon} />}<span class="chip__text">{label}</span>
+  </a>
+) : kind === 'radio' ? (
+  <label class:list={classes}>
+    <input class="sr-only" type="radio" name={name} value={value} checked={checked} disabled={disabled} />
+    {shape && <Fragment set:html={statusShape(shape, 16, 'shape--marker')} />}{icon && <Icon name={icon} />}
+    <span class="chip__text">{label}{count !== undefined && <span class="chip__count num"><span class="sr-only">, </span>{count}{countUnit && <span class="sr-only"> {countUnit}</span>}</span>}</span>
+  </label>
+) : (
+  <button
+    class:list={classes}
+    type="button"
+    aria-pressed={kind === 'toggle' ? (pressed ? 'true' : 'false') : undefined}
+    aria-expanded={kind === 'disclosure' ? (pressed ? 'true' : 'false') : undefined}
+    aria-controls={controls}
+    disabled={disabled}
+    {...rest}
+  >
+    {kind === 'toggle' && <><Icon name="plus" class="chip__off" /><Icon name="check" class="chip__on" /></>}
+    {kind !== 'toggle' && icon && <Icon name={icon} />}
+    <span class="chip__text">{label}{count !== undefined && <span class="chip__count num"><span class="sr-only">, </span>{count}{countUnit && <span class="sr-only"> {countUnit}</span>}</span>}</span>
+    {kind === 'disclosure' && <Icon name="chevron-down" class="chip__chevron" />}
+  </button>
+)}

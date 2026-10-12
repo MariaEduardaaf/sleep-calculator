@@ -1,0 +1,75 @@
+---
+// site-pages 8.5. Steps mirror each tool's "How it works" (sleep.md, nap.md, wifi-city.md 8 and 10.1, recipes.md).
+// Every tool's "How it works" links here. "Reviewed by" only with a real SITE.editor.
+import ContentPage from '../layouts/ContentPage.astro';
+import SourceList, { type Source } from '../components/ui/SourceList.astro';
+import ExtLink from '../components/ui/ExtLink.astro';
+import { SITE } from '../site';
+
+const toc = [
+  { id: 'standards', label: 'Our standards' },
+  { id: 'sleep', label: 'Sleep and nap calculators' },
+  { id: 'corrections', label: 'Corrections' },
+];
+const H = Object.fromEntries(toc.map((t) => [t.id, t.label])); // headings and "On this page" share one list
+
+
+const sleepSources: Source[] = [
+  { title: 'About Sleep', publisher: 'Centers for Disease Control and Prevention', href: 'https://www.cdc.gov/sleep/about/index.html' },
+  { title: 'Recommended Amount of Sleep for a Healthy Adult (Watson et al., 2015)', publisher: 'AASM and Sleep Research Society, Journal of Clinical Sleep Medicine', href: 'https://jcsm.aasm.org/doi/10.5664/jcsm.4758' },
+  { title: 'Recommended Amount of Sleep for Pediatric Populations (Paruthi et al., 2016)', publisher: 'American Academy of Sleep Medicine', href: 'https://aasm.org/resources/pdf/pediatricsleepdurationconsensus.pdf' },
+  { title: 'Brain Basics: Understanding Sleep', publisher: 'National Institute of Neurological Disorders and Stroke', href: 'https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep' },
+  { title: 'National Sleep Foundation’s sleep time duration recommendations (Hirshkowitz et al., 2015)', publisher: 'Sleep Health', href: 'https://www.sleephealthjournal.org/article/S2352-7218(15)00015-7/fulltext' },
+  { title: 'Napping: Do’s and don’ts for healthy adults', publisher: 'Mayo Clinic', href: 'https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/napping/art-20048319' },
+];
+---
+<ContentPage
+  title={`How the Sleep Calculator Works | ${SITE.name}`}
+  description={`The method and sources behind the sleep and nap calculators, and what it can’t know.`}
+  path="/method/"
+  h1="How the sleep calculator works"
+  lede="What the calculators count, where the numbers come from, and what they can’t know."
+  updated="2026-10-12"
+  reviewedBy={SITE.editor}
+  toc={toc}
+>
+  <section class="section prose" aria-labelledby="standards">
+    <h2 id="standards">{H.standards}</h2>
+    <ul>
+      <li>We cite primary sources: public health agencies and medical societies.</li>
+      <li>Ads never change results.</li>
+      <li>We say what a tool can’t know, right next to its answer.</li>
+      <li>We fix mistakes when you tell us: <a href="/contact/">contact us</a>.</li>
+      <li>Every page shows when it was last updated.</li>
+    </ul>
+  </section>
+
+  <section class="section prose" aria-labelledby="sleep">
+    <h2 id="sleep">{H.sleep}</h2>
+    <p>Your sleep runs in cycles of lighter sleep, deep sleep and REM sleep. One cycle takes about 90 minutes for many adults. Waking at the end of a cycle usually feels easier than being pulled out of deep sleep.</p>
+    <p>The times are simple arithmetic, not medical advice. Cycle length varies between people and through the night, and the calculators can’t see your sleep.</p>
+    <h3>Sleep calculator</h3>
+    <ol>
+      <li>Start from the time you need to wake up, for example 7:00&nbsp;AM.</li>
+      <li>Count back whole cycles: 6 cycles of 90 minutes is 9 hours, 5 cycles is 7 hours 30 minutes.</li>
+      <li>Subtract the time it takes you to fall asleep, 15 minutes unless you change it.</li>
+      <li>The result is when to be in bed with the lights out: 11:15&nbsp;PM for 5 cycles, 9:45&nbsp;PM for 6.</li>
+    </ol>
+    <p>For a bedtime, the calculator counts forward the same way.</p>
+    <h3>Nap calculator</h3>
+    <ol>
+      <li>Start from when you lie down, now unless you change it.</li>
+      <li>Add the minutes it takes you to fall asleep, 10 unless you change it.</li>
+      <li>Add 20 minutes for a power nap, or 90 minutes for one full sleep cycle.</li>
+      <li>That’s when to wake up.</li>
+    </ol>
+    <SourceList sources={sleepSources} id="sleep-sources" />
+  </section>
+
+
+
+  <section class="section prose" aria-labelledby="corrections">
+    <h2 id="corrections">{H.corrections}</h2>
+    <p>Tell us what’s wrong on the <a href="/contact/">contact page</a>, and we’ll fix it.</p>
+  </section>
+</ContentPage>

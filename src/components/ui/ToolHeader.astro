@@ -1,0 +1,18 @@
+---
+// DESIGN-SYSTEM 3.22. SubNav (if any), H1, lede. The H1 is static and holds the main keyword.
+import SubNav, { type SubNavItem } from './SubNav.astro';
+
+interface Props {
+  h1: string;
+  lede: string;
+  subnav?: SubNavItem[];
+  subnavLabel?: string;
+  class?: string;
+}
+const { h1, lede, subnav, subnavLabel = 'More tools like this', class: cls } = Astro.props;
+---
+<header class:list={['tool-header', cls]}>
+  {subnav && <SubNav label={subnavLabel} items={subnav} />}
+  <h1>{h1}</h1>
+  <p class="lede">{lede}</p>
+</header>

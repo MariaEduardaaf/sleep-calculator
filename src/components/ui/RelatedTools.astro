@@ -1,0 +1,16 @@
+---
+// DESIGN-SYSTEM 3.34. H2 "More free tools" and 2 or 3 LinkRows, at the end of the content.
+import LinkRow from './LinkRow.astro';
+import type { IconName } from './icons';
+
+export interface RelatedTool { icon: IconName; title: string; line: string; href: string }
+interface Props {
+  items: RelatedTool[];
+  class?: string;
+}
+const { items, class: cls } = Astro.props;
+---
+{items.length > 0 && <section class:list={['section', 'related', cls]} aria-labelledby="related-title">
+  <h2 id="related-title">More free tools</h2>
+  <ul class="linkrows">{items.map((i) => <li><LinkRow {...i} /></li>)}</ul>
+</section>}

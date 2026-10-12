@@ -1,0 +1,20 @@
+---
+// DESIGN-SYSTEM 3.19. While SITE.ads is false the frame renders only in dev and on /kit/, so layouts are tested
+// at real size and visitors (and the AdSense reviewer) never see empty boxes. Inline shows below 1024px;
+// leaderboard and rail from 1024px.
+import { SITE } from '../../site';
+
+interface Props {
+  variant: 'inline' | 'leaderboard' | 'rail';
+  id: string;
+  class?: string;
+}
+const { variant, id, class: cls } = Astro.props;
+const show = SITE.ads || import.meta.env.DEV || Astro.url.pathname.startsWith('/kit/');
+---
+{show && (
+  <aside class:list={['adslot', `adslot--${variant}`, cls]} aria-label="Advertisements">
+    <p class="adslot__label">Advertisements</p>
+    <div class="adslot__box" data-ad-slot={id}></div>
+  </aside>
+)}

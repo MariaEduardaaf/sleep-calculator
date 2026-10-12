@@ -1,0 +1,30 @@
+---
+// DESIGN-SYSTEM 5.2, ContentPage (about, contact, privacy, terms, method, accessibility): Breadcrumbs (Home > H1)
+// with their BreadcrumbList, PageHeader, the prose sections (default slot) and, on long pages, "On this page" in the
+// rail from 1024px. No ads (site-pages 12).
+import Base, { type BaseProps } from './Base.astro';
+import ContentLayout, { type TocItem } from './ContentLayout.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import { breadcrumbJsonLd, type Crumb } from '../components/ui/jsonld';
+
+interface Props extends BaseProps {
+  h1: string;
+  lede: string;
+  /** ISO date of the line under the lede. */
+  updated: string;
+  updatedLabel?: string;
+  reviewedBy?: string;
+  /** Long pages only (privacy, terms, method). */
+  toc?: TocItem[];
+}
+const { h1, lede, updated, updatedLabel, reviewedBy, toc, jsonLd = [], ...base } = Astro.props;
+const crumbs: Crumb[] = [{ label: 'Home', href: '/' }, { label: h1 }];
+---
+<Base {...base} jsonLd={[...jsonLd, breadcrumbJsonLd(crumbs)]}>
+  <div class="container">
+    <Breadcrumbs items={crumbs} />
+    <PageHeader h1={h1} lede={lede} updated={updated} updatedLabel={updatedLabel} reviewedBy={reviewedBy} />
+    <ContentLayout toc={toc}><slot /></ContentLayout>
+  </div>
+</Base>

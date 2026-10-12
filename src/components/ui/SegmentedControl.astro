@@ -1,0 +1,19 @@
+---
+// DESIGN-SYSTEM 3.6. A native radio group with a visible legend; each radio covers its option.
+interface Option { value: string; label: string; checked?: boolean }
+interface Props {
+  name: string;
+  legend: string;
+  options: Option[];
+  class?: string;
+}
+const { name, legend, options, class: cls } = Astro.props;
+---
+<fieldset class:list={['seg', cls]}>
+  <legend class="field__label">{legend}</legend>
+  <div class="seg__track">
+    {options.map((o) => (
+      <label class="seg__opt"><input type="radio" name={name} value={o.value} checked={o.checked} /><span>{o.label}</span></label>
+    ))}
+  </div>
+</fieldset>

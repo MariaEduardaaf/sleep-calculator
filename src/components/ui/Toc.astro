@@ -1,0 +1,12 @@
+---
+// DESIGN-SYSTEM 3.34. "On this page": rail only (>= 1024px), below the rail ad, not sticky.
+interface Props {
+  items: { id: string; label: string }[];
+  class?: string;
+}
+const { items, class: cls } = Astro.props;
+---
+<nav class:list={['toc', cls]} aria-labelledby="toc-title">
+  <p class="label" id="toc-title">On this page</p>
+  <ol>{items.map((i) => <li><a href={`#${i.id}`}>{i.label}</a></li>)}</ol>
+</nav>

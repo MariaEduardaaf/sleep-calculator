@@ -1,0 +1,149 @@
+---
+// Nap calculator (specs/nap.md). Same skeleton, components and night band as the sleep calculator. "Now" is
+// only known in the browser, so the server renders both rows with skeleton times, never a placeholder time.
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import Panel from '../../components/ui/Panel.astro';
+import TextField from '../../components/ui/TextField.astro';
+import Button from '../../components/ui/Button.astro';
+import Disclosure from '../../components/ui/Disclosure.astro';
+import NumberField from '../../components/ui/NumberField.astro';
+import Icon from '../../components/ui/Icon.astro';
+import AdSlot from '../../components/ui/AdSlot.astro';
+import Faq from '../../components/ui/Faq.astro';
+import SourceList, { type Source } from '../../components/ui/SourceList.astro';
+import { faqJsonLd, type FaqItem } from '../../components/ui/jsonld';
+import { napRows, rowsHTML } from '../../components/sleep/render';
+import { SITE, SIBLINGS } from '../../site';
+import '../../components/sleep/sleep.css';
+
+const UPDATED = '2026-10-12';
+
+// Copy joins a number to the word it counts with a no-break space ( ), so "90 / minutes" never splits.
+const faq: FaqItem[] = [
+  ['How long should a power nap be?', 'About 20 minutes of sleep. Short naps usually keep you in light sleep, so waking up is easier.'],
+  ['Why 90 minutes for a longer nap?', 'One full sleep cycle takes about 90 minutes for many adults, so you’re more likely to wake between cycles.'],
+  ['Can naps hurt my sleep at night?', 'For some people, yes. If you have trouble sleeping at night, keep naps short and early, or skip them. If you stay tired, talk to a doctor.'],
+];
+
+const sources: Source[] = [
+  { title: 'Napping: Do’s and don’ts for healthy adults', publisher: 'Mayo Clinic', href: 'https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/napping/art-20048319' },
+  { title: 'Brain Basics: Understanding Sleep', publisher: 'National Institute of Neurological Disorders and Stroke', href: 'https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep' },
+];
+---
+<ToolLayout
+  title={`Nap Calculator: When to Wake Up From a Nap | ${SITE.name}`}
+  description="Free nap calculator. Lie down now or at a set time and get the wake-up time for a 20-minute power nap or a full 90-minute sleep cycle. Add it to your calendar."
+  path="/nap/"
+  h1="Nap calculator"
+  lede="Wake up before deep sleep, or after one full cycle."
+  subnav={[{ label: 'Sleep calculator', href: '/', current: false }, { label: 'Nap calculator', href: '/nap/', current: true }]}
+  subnavLabel="Sleep tools"
+  trust={[{ icon: 'circle-check', text: 'Free, no account' }, { icon: 'clock', text: 'Updated Oct 12, 2026' }, { icon: 'info', text: 'How it works and sources', href: '#how-it-works' }]}
+  toc={[
+    { id: 'how-it-works', label: 'How the nap calculator works' },
+    { id: 'which-nap', label: 'Which nap should you take?' },
+    { id: 'tips', label: 'Tips for a better nap' },
+    { id: 'faq', label: 'Questions people ask' },
+  ]}
+  adId="nap-rail"
+  related={SIBLINGS}
+  jsonLd={[faqJsonLd(faq)]}
+>
+  <section class="sleep-tool" aria-label="Nap calculator">
+    <Panel as="form" class="sleep-panel js-only" id="nap-form" aria-label="Nap calculator settings" novalidate>
+      <TextField id="time" label="Lying down at" time>
+        <Button slot="after" variant="secondary" size="lg" id="now">Now<span class="sr-only">: use the current time</span></Button>
+      </TextField>
+      <Disclosure id="tune" label="Fine-tune">
+        <div class="sleep-tune">
+          <NumberField id="lat" label="Minutes to fall asleep" min={0} max={60} value={10} unit="min" hint="From 0 to 60. We start at 10." decLabel="Fewer minutes to fall asleep" incLabel="More minutes to fall asleep" />
+          <div class="sleep-tune__foot">
+            <p class="field__hint">Saved on this device.</p>
+            <Button variant="quiet" size="sm" id="tune-reset" hidden>Reset to 10</Button>
+          </div>
+        </div>
+      </Disclosure>
+    </Panel>
+
+    <Panel tone="night" as="section" class="sleep-band" labelledby="band-h">
+      <div class="results__head">
+        <h2 id="band-h">Wake up at</h2>
+        <p class="results__assumption">Based on <span id="band-lat">10</span>&nbsp;min to fall asleep. <button class="btn btn--quiet btn--inline js-only" type="button" id="band-change">Change</button></p>
+      </div>
+      <p class="notice no-js-only sleep-band__nojs"><Icon name="info" size={16} /><span>Turn on JavaScript to see <span class="sleep-nowrap">wake-up</span> times. Rule of thumb: for a power nap, wake up 30&nbsp;minutes after you lie down; for a full cycle, 1&nbsp;hour&nbsp;40&nbsp;minutes after.</span></p>
+      <div class="sleep-band__out" id="band-out" set:html={rowsHTML(napRows(null, 10), false)}></div>
+      <p class="status status--error sleep-band__error" id="band-error" hidden><Icon name="circle-alert" size={16} /><span>Your browser couldn’t create the calendar file. Use Google Calendar, or set an alarm.</span></p>
+      <p class="results__note js-only" id="band-note">Add to calendar saves an event file for Apple Calendar or Outlook. On Android, use Google Calendar. Whether you get an alert depends on your calendar app, so set an alarm too.</p>
+      <p class="sr-only" id="band-status" role="status"></p>
+    </Panel>
+  </section>
+
+  <Fragment slot="content">
+    <section class="section prose" aria-labelledby="how-it-works">
+      <h2 id="how-it-works">How the nap calculator works</h2>
+      <ol>
+        <li>Start from when you lie down, now unless you change it.</li>
+        <li>Add the minutes it takes you to fall asleep, 10 unless you change it.</li>
+        <li>Add 20&nbsp;minutes for a power nap, or 90&nbsp;minutes for one full sleep cycle.</li>
+        <li>That’s when to wake up.</li>
+      </ol>
+      <p>The times are simple arithmetic, not medical advice.</p>
+      <SourceList sources={sources} updated={UPDATED} />
+    </section>
+
+    <AdSlot variant="inline" id="nap-content-1" />
+
+    <section class="section prose" aria-labelledby="which-nap">
+      <h2 id="which-nap">Which nap should you take?</h2>
+      <p><strong>20-minute power nap.</strong> Short enough that you usually stay in light sleep, so it’s easier to get up. A good fit for a work break.</p>
+      <p><strong>90-minute nap.</strong> One full sleep cycle. Use it when you have more time, for example after a short night. The calculator adds the minutes it takes you to fall asleep.</p>
+    </section>
+
+    <section class="section prose" aria-labelledby="tips">
+      <h2 id="tips">Tips for a better nap</h2>
+      <ul>
+        <li>Nap early in the afternoon. Late naps can make it harder to fall asleep at night&nbsp;[1].</li>
+        <li>Keep it short unless you have time for a full cycle. Waking from deep sleep can leave you groggy.</li>
+        <li>Set a real alarm as well as the calendar event.</li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="faq">
+      <h2 id="faq">Questions people ask</h2>
+      <Faq items={faq} />
+    </section>
+  </Fragment>
+</ToolLayout>
+
+<script>
+  import { $, band, int, loadTune, saveTune, tuneField, urlTime, writeUrl } from '../../components/sleep/client';
+  import { hhmm, napRows, napStatus } from '../../components/sleep/render';
+  import { nextOccurrence } from '../../components/sleep/sleep-math';
+
+  const KEY = 'ft-nap-tune';
+  const time = $<HTMLInputElement>('time'), reset = $('tune-reset');
+  const results = band(() => 'Enter the time you lie down to see wake-up times.', napStatus);
+  const saved = loadTune(KEY);
+  const lat = tuneField('lat', int(saved.lat, 0, 60) ?? 10, (n) => `Minutes to fall asleep must be 0 to 60, so we used ${n}.`, () => {
+    saveTune(KEY, { lat: lat.value() });
+    update(true);
+  });
+
+  function update(announce: boolean) {
+    const l = lat.value();
+    $('band-lat').textContent = String(l);
+    reset.hidden = l === 10;
+    // "Now" (this minute) counts as today, not tomorrow (nap.md 10).
+    results.render(time.value ? napRows(nextOccurrence(time.value, new Date(Date.now() - 60_000)), l) : null, announce);
+  }
+
+  const edited = () => { update(true); writeUrl({ t: time.value }); };
+  time.addEventListener('input', edited);
+  $('now').addEventListener('click', () => { time.value = hhmm(new Date()); edited(); });
+  $('band-change').addEventListener('click', () => { $<HTMLDetailsElement>('tune').open = true; $('lat').focus(); });
+  reset.addEventListener('click', () => { lat.set(10); $('lat').focus(); });
+  $('nap-form').addEventListener('submit', (e) => e.preventDefault());
+
+  time.value = urlTime() ?? hhmm(new Date());
+  update(false);
+</script>

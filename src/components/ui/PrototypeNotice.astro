@@ -1,0 +1,13 @@
+---
+// DESIGN-SYSTEM 3.34. "Prototype: {fact}." Rendered only while SITE.prototypeNotices is true, so one switch
+// removes them all. `text` is the fact, typed with real punctuation (CRAFT-07).
+import Icon from './Icon.astro';
+import { SITE } from '../../site';
+
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: cls } = Astro.props;
+---
+{SITE.prototypeNotices && <p class:list={['notice', cls]}><Icon name="info" size={16} /><span>Prototype: {text}</span></p>}

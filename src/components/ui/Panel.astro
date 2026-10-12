@@ -1,0 +1,14 @@
+---
+// DESIGN-SYSTEM 3.12. `night` is the token scope for the sleep and nap results band only.
+import type { HTMLTag } from 'astro/types';
+
+interface Props {
+  tone?: 'default' | 'night';
+  as?: HTMLTag;
+  labelledby?: string;
+  class?: string;
+  [attr: string]: unknown;
+}
+const { tone = 'default', as: Tag = 'div', labelledby, class: cls, ...rest } = Astro.props;
+---
+<Tag class:list={['panel', tone === 'night' && 'panel--night', cls]} aria-labelledby={labelledby} {...rest}><slot /></Tag>

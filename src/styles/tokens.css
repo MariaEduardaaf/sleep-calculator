@@ -1,0 +1,82 @@
+:root {
+  color-scheme: light dark;
+  --font-sans-stack: var(--font-sans), sans-serif; /* --font-sans comes from the Astro Fonts API */
+
+  --bg: #FFFFFF; --surface: #F2F5F9; --surface-2: #E6EBF2;
+  --ink: #142033; --muted: #4D596B; --line: #DCE2EA; --line-strong: #7B8698;
+  --action: #1B4DC1; --action-hover: #163E9C; --on-action: #FFFFFF;
+  --action-tint: #E5EDFC; --action-tint-ink: #163E9C; --focus: #1B4DC1;
+  --good: #17653A; --good-tint: #E2F2E8; --good-fill: #1E7A46;
+  --caution: #8A4700; --caution-tint: #FCEDD8; --caution-fill: #A65400;
+  --neutral: #4D596B; --neutral-tint: #ECF0F5; --neutral-fill: #5E6A7C;
+  --danger: #B42318; --danger-tint: #FDECEA; --marker-ring: #FFFFFF;
+  --night-bg: #1A2142; --night-surface: #232B52; --night-ink: #F1F3FA; --night-muted: #B9C1DD;
+  --night-line: #3A4370; --night-line-strong: #8D96BC; --night-accent: #F2D27F; --night-on-accent: #1A2142; --night-focus: #F2D27F;
+  --night-danger: #FF8B80; --night-good: #7FD6A3; --night-caution: #F2B866; /* same in dark: the band is dark in both themes */
+  --night-danger-tint: #3A1714; --night-good-tint: #11281C; --night-caution-tint: #2E2211;
+  --sign-bg: #1B4DC1; --sign-hover: #2456C9; --sign-ink: #FFFFFF; --sign-muted: #D9E3FA;
+  --sign-tile: #FFFFFF; --sign-glyph: #1B4DC1; --sign-focus: #FFFFFF; --sign-edge: rgb(255 255 255 / 0.16);
+  --photo-edge: rgb(20 32 51 / 0.08);
+  --scrim: rgb(14 19 27 / 0.55);
+  --shadow-1: 0 1px 2px rgb(20 32 51 / 0.08), 0 2px 8px rgb(20 32 51 / 0.08);
+  --shadow-2: 0 8px 24px rgb(20 32 51 / 0.18);
+  --bar-start: inset 3px 0 0 var(--action); --bar-bottom: inset 0 -3px 0 var(--action); /* current and selected bars (CRAFT-13) */
+
+  --fs-sm: 0.875rem; --lh-sm: 1.25rem;
+  --fs-md: 1.0625rem; --lh-md: 1.5rem; --lh-prose: 1.75rem;
+  --fs-lg: 1.25rem; --lh-lg: 1.75rem;
+  --fs-xl: 1.5rem; --lh-xl: 2rem;
+  --fs-2xl: 2rem; --lh-2xl: 2.25rem;
+  --fs-display: 3.5rem; --lh-display: 3.5rem;
+  --fw-regular: 400; --fw-bold: 700;
+
+  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.5rem; --space-6: 2rem; --space-7: 3rem; --space-8: 4rem;
+  --control-sm: 2.75rem; --control-md: 3rem; --control-lg: 3.5rem;
+  --icon-sm: 1rem; --icon-md: 1.25rem; --icon-lg: 1.5rem; --icon-xl: 1.75rem;
+  --tile-sm: 2rem; --tile-md: 2.5rem; --tile-lg: 3rem;
+  --r-sm: 0.5rem; --r-md: 0.75rem; --r-lg: 1rem; --r-pill: 999px; --r-none: 0;
+  --bw: 1px; --bw-2: 2px; --focus-w: 3px; --focus-offset: 2px;
+  --z-sticky: 20;
+  --dur-1: 120ms; --dur-2: 200ms; --dur-3: 240ms; --dur-out: 160ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1); --ease-in: cubic-bezier(0.4, 0, 1, 1);
+
+  --container: 75rem; --gutter: var(--space-4); --measure: 40rem; --measure-lede: 36rem; --rail: 20rem;
+  --header-h: 3.5rem; --page-top: var(--space-4);
+  --map-top: calc(var(--header-h) + var(--page-top) + var(--control-sm) + var(--space-2)); /* header + page top + crumb row + 8 = 140px on desktop */
+}
+@media (min-width: 40rem) { :root { --gutter: var(--space-5); } }
+@media (min-width: 64rem) {
+  :root { --gutter: var(--space-6); --header-h: 4rem; --page-top: var(--space-5);
+    --fs-2xl: 2.75rem; --lh-2xl: 3rem; --fs-display: 4.5rem; --lh-display: 4.5rem; }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0E131B; --surface: #161D28; --surface-2: #1F2835;
+    --ink: #E8EDF4; --muted: #A4AFC0; --line: #283242; --line-strong: #728097;
+    --action: #8DB3FF; --action-hover: #AECAFF; --on-action: #0B1424;
+    --action-tint: #1A2A49; --action-tint-ink: #AECAFF; --focus: #8DB3FF;
+    --good: #7FD6A3; --good-tint: #11281C; --good-fill: #4FBF80;
+    --caution: #F2B866; --caution-tint: #2E2211; --caution-fill: #E39A3B;
+    --neutral: #A4AFC0; --neutral-tint: #1F2835; --neutral-fill: #98A4B6;
+    --danger: #FF8B80; --danger-tint: #3A1714; --marker-ring: #0E131B;
+    --night-bg: #171D36; --night-surface: #20274A; --night-ink: #EEF1FA; --night-muted: #AEB7D5;
+    --night-line: #2E3760; --night-line-strong: #7983AA; --night-accent: #EBCB78; --night-on-accent: #171D36; --night-focus: #EBCB78;
+    --sign-bg: #17305F; --sign-hover: #1D3A70; --sign-ink: #F1F5FD; --sign-muted: #C3D2F0;
+    --sign-tile: #8DB3FF; --sign-glyph: #0B1424; --sign-focus: #F1F5FD; --sign-edge: rgb(241 245 253 / 0.12);
+    --photo-edge: rgb(255 255 255 / 0.06);
+    --scrim: rgb(0 0 0 / 0.6);
+    --shadow-1: 0 0 0 1px #283242, 0 2px 8px rgb(0 0 0 / 0.45);
+    --shadow-2: 0 0 0 1px #283242, 0 12px 32px rgb(0 0 0 / 0.55);
+  }
+}
+/* Token scopes: components inside keep using semantic tokens. */
+.panel--night {
+  --bg: var(--night-bg); --surface: var(--night-surface); --surface-2: var(--night-surface);
+  --ink: var(--night-ink); --muted: var(--night-muted); --line: var(--night-line); --line-strong: var(--night-line-strong);
+  --action: var(--night-ink); --action-hover: var(--night-ink); --focus: var(--night-focus);
+  --danger: var(--night-danger); --good: var(--night-good); --caution: var(--night-caution); /* B2: status text passes AA on the band */
+  --danger-tint: var(--night-danger-tint); --good-tint: var(--night-good-tint); --caution-tint: var(--night-caution-tint);
+  --neutral: var(--night-muted); --neutral-tint: var(--night-surface);
+}
+.signboard { --ink: var(--sign-ink); --muted: var(--sign-muted); --focus: var(--sign-focus); }

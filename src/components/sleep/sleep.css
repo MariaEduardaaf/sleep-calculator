@@ -1,0 +1,40 @@
+/* Sleep and nap calculators (specs/sleep.md, specs/nap.md): the tool's layout, then the band's own pieces.
+   Token values only; kit classes are never restyled here. */
+
+/* Tool: the settings panel, then the night band; side by side from 1024px (sleep.md 6) */
+.sleep-tool { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+.sleep-panel { display: flex; flex-direction: column; gap: var(--space-4); }
+.sleep-tune { display: flex; flex-direction: column; gap: var(--space-4); }
+/* "Saved on this device." and, when the values differ from the defaults, the reset action: one 44px line */
+.sleep-tune__foot { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--space-3); min-height: var(--control-sm); }
+
+/* Results crossfade after an input, never on first render (DESIGN-SYSTEM 2.5) */
+.sleep-band__out.is-updating { opacity: 0.4; }
+@media (prefers-reduced-motion: no-preference) {
+  .sleep-band__out { transition: opacity var(--dur-2) var(--ease-out); }
+  .sleep-band__out.is-updating { transition: none; }
+}
+.sleep-band__nojs, .sleep-band__error { margin-top: var(--space-4); }
+/* A cleared time field: the empty state starts 16px under the head's divider, as the first row does. flow-root
+   keeps that margin inside the results box, whose min-height holds the band's height (sleep.md 9). */
+.sleep-band__out { display: flow-root; }
+.sleep-band__out > .empty { margin-top: var(--space-4); }
+/* "90-minute" and "wake-up" never break at their hyphen */
+.sleep-nowrap { white-space: nowrap; }
+
+/* Nap times before the browser knows "now": the size of a Display time (Skeleton, DESIGN-SYSTEM 3.33) */
+.sleep-skeleton { width: 10rem; height: var(--lh-display); border-radius: var(--r-sm); }
+/* Nap without JavaScript: the no-JS notice replaces the times, so the row's text starts the row */
+html:not(.js) .result__time:has(.sleep-skeleton) { display: none; }
+html:not(.js) .result:has(.sleep-skeleton) .result__meta { margin-top: 0; padding-top: 0; }
+
+/* Content */
+.section .sleep-footnote { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--muted); }
+
+@media (min-width: 64rem) {
+  .sleep-tool { grid-template-columns: 25rem minmax(0, 1fr); column-gap: var(--space-6); align-items: start; }
+  .sleep-panel { position: sticky; top: var(--space-5); }
+  html:not(.js) .sleep-panel.js-only + .sleep-band { grid-column: 1 / -1; } /* nap without JavaScript: no panel */
+  html:not(.js) .result:has(.sleep-skeleton) { grid-template-columns: minmax(0, 1fr); grid-template-areas: "meta" "who"; }
+  .sleep-skeleton { width: 13rem; }
+}

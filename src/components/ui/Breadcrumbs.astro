@@ -1,0 +1,22 @@
+---
+// DESIGN-SYSTEM 3.20. Visible crumbs only; pair with breadcrumbJsonLd(items) from jsonld.ts. Links get the .hit
+// overlay, so a short one ("Home", 39px) still has a 44x44 target without moving the separators.
+import Icon from './Icon.astro';
+import type { Crumb } from './jsonld';
+
+interface Props {
+  items: Crumb[];
+  class?: string;
+}
+const { items, class: cls } = Astro.props;
+---
+<nav class:list={['crumbs', cls]} aria-label="Breadcrumb">
+  <ol>
+    {items.map((c, i) => (
+      <li>
+        {i > 0 && <Icon name="chevron-right" size={16} />}
+        {c.href ? <a class="hit" href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
+      </li>
+    ))}
+  </ol>
+</nav>

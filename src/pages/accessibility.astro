@@ -1,0 +1,45 @@
+---
+// site-pages 8.6. Claims match DESIGN-SYSTEM 7, the checklist every page is verified against.
+import ContentPage from '../layouts/ContentPage.astro';
+import { SITE } from '../site';
+---
+<ContentPage
+  title={`Accessibility | ${SITE.name}`}
+  description={`How ${SITE.name} works for people who use a keyboard, a screen reader or zoom, and how to report a problem.`}
+  path="/accessibility/"
+  h1="Accessibility"
+  lede={`We want ${SITE.name} to work for everyone, including people who use a keyboard, a screen reader or zoom.`}
+  updated="2026-10-12"
+  updatedLabel="Last reviewed"
+>
+  <section class="section prose" aria-labelledby="goal">
+    <h2 id="goal">Our goal</h2>
+    <p>We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.1 at level AA on every page.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="do">
+    <h2 id="do">What we do</h2>
+    <ul>
+      <li>Text and controls meet AA contrast in light and dark mode.</li>
+      <li>Everything works with a keyboard, with a visible focus ring.</li>
+      <li>Every input has a visible label.</li>
+      <li>Touch targets are at least 44 by 44 pixels.</li>
+      <li>Recommended times are marked with words, not color alone.</li>
+      <li>Pages follow your system’s dark mode and reduced-motion settings.</li>
+      <li>Pages work at 320 pixels wide and at 400% zoom without sideways scrolling.</li>
+    </ul>
+  </section>
+
+  <section class="section prose" aria-labelledby="limits">
+    <h2 id="limits">Known limits</h2>
+    <ul>
+      <li>Google Calendar opens on Google’s site, which we don’t control.</li>
+      <li>Ads come from Google and may not meet these standards.</li>
+    </ul>
+  </section>
+
+  <section class="section prose" aria-labelledby="problem">
+    <h2 id="problem">Tell us about a problem</h2>
+    <p>If something doesn’t work for you, <a href="/contact/">contact us</a> with the page and what happened. We’ll fix it or tell you how to work around it.</p>
+  </section>
+</ContentPage>

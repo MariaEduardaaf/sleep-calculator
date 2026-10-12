@@ -1,0 +1,205 @@
+---
+// Sleep calculator (specs/sleep.md). Panel with the settings, then the night band with the results: the
+// page's one bold element. The server HTML carries the default answer, so there is no blank first paint.
+import ToolLayout from '../layouts/ToolLayout.astro';
+import Panel from '../components/ui/Panel.astro';
+import SegmentedControl from '../components/ui/SegmentedControl.astro';
+import TextField from '../components/ui/TextField.astro';
+import Button from '../components/ui/Button.astro';
+import Disclosure from '../components/ui/Disclosure.astro';
+import NumberField from '../components/ui/NumberField.astro';
+import Icon from '../components/ui/Icon.astro';
+import AdSlot from '../components/ui/AdSlot.astro';
+import Table from '../components/ui/Table.astro';
+import Faq from '../components/ui/Faq.astro';
+import SourceList, { type Source } from '../components/ui/SourceList.astro';
+import { faqJsonLd, type FaqItem } from '../components/ui/jsonld';
+import { nextOccurrence } from '../components/sleep/sleep-math';
+import { rowsHTML, sleepRows } from '../components/sleep/render';
+import { SITE, SIBLINGS } from '../site';
+import '../components/sleep/sleep.css';
+
+const UPDATED = '2026-10-12';
+// Wake up at 7:00 AM, 15 min to fall asleep, 90-minute cycles, counted on a fixed winter day (no clock change
+// in the night), so the server's answer is the same in every timezone. The browser re-renders it on load.
+const defaults = rowsHTML(sleepRows('wake', nextOccurrence('07:00', new Date(2026, 0, 15, 12)), 15, 90), false);
+
+// Copy joins a number to the word it counts with a no-break space ( ), so "90 / minutes" never splits.
+const faq: FaqItem[] = [
+  ['How long is a sleep cycle?', 'About 90 minutes on average, but it varies from person to person and through the night, often between 80 and 110 minutes. That’s why you can change it under Fine-tune.'],
+  ['Why does the calculator add 15 minutes?', 'Most people take a while to fall asleep. The calculator starts at 15 minutes; enter your own number under Fine-tune for more accurate times.'],
+  ['Is 8 hours of sleep enough?', 'For most adults, yes. The CDC and the American Academy of Sleep Medicine recommend at least 7 hours a night for adults. Needs differ, so how you feel during the day is a better guide than any single number.'],
+  ['Can this set an alarm?', 'No. Add to calendar and Google Calendar save the time as a calendar event; whether it alerts you depends on your calendar app. To be woken up, set an alarm on your phone.'],
+  ['Is this a medical tool?', 'No. It’s simple arithmetic on sleep cycles. Real sleep doesn’t run on a clock, so treat the times as a starting point. If you often sleep badly or feel exhausted, talk to a doctor.'],
+];
+
+// SL-17 (checked 2026-10-12): jcsm.aasm.org/doi/10.5664/jcsm.4758 returns 404, the DOI resolves to the article.
+// sleephealthjournal.org (Hirshkowitz et al., 2015) answers every non-interactive client with a Cloudflare
+// challenge (403), so [5] is the National Sleep Foundation's own page, which states the same newborn, 18 to 64
+// and 65+ ranges the footnote cites.
+const sources: Source[] = [
+  { title: 'About Sleep', publisher: 'Centers for Disease Control and Prevention', href: 'https://www.cdc.gov/sleep/about/index.html' },
+  { title: 'Recommended Amount of Sleep for a Healthy Adult (Watson et al., 2015)', publisher: 'AASM and Sleep Research Society, Journal of Clinical Sleep Medicine', href: 'https://doi.org/10.5664/jcsm.4758' },
+  { title: 'Recommended Amount of Sleep for Pediatric Populations (Paruthi et al., 2016)', publisher: 'American Academy of Sleep Medicine', href: 'https://aasm.org/resources/pdf/pediatricsleepdurationconsensus.pdf' },
+  { title: 'Brain Basics: Understanding Sleep', publisher: 'National Institute of Neurological Disorders and Stroke', href: 'https://www.ninds.nih.gov/health-information/public-education/brain-basics/brain-basics-understanding-sleep' },
+  { title: 'How Much Sleep Do You Really Need?', publisher: 'National Sleep Foundation', href: 'https://www.thensf.org/how-many-hours-of-sleep-do-you-really-need/' },
+];
+
+// A range wraps as one piece, so a narrow cell never leaves "months" or "hours" alone on a line.
+const nb = (s: string) => s.replaceAll(' ', ' ');
+const ages = [
+  [`Newborn, ${nb('0 to 3 months')}`, nb('14 to 17 hours')],
+  [`Infant, ${nb('4 to 12 months')}`, `${nb('12 to 16 hours')}, including naps`],
+  [`Toddler, ${nb('1 to 2 years')}`, `${nb('11 to 14 hours')}, including naps`],
+  [`Preschool, ${nb('3 to 5 years')}`, `${nb('10 to 13 hours')}, including naps`],
+  [`School age, ${nb('6 to 12 years')}`, nb('9 to 12 hours')],
+  [`Teen, ${nb('13 to 17 years')}`, nb('8 to 10 hours')],
+  [`Adult, ${nb('18 to 60 years')}`, nb('7 or more hours')],
+  [`Adult, ${nb('61 to 64 years')}`, nb('7 to 9 hours')],
+  [`Adult, ${nb('65 and older')}`, nb('7 to 8 hours')],
+];
+---
+<ToolLayout
+  title={`Sleep Calculator: When to Go to Bed and Wake Up | ${SITE.name}`}
+  description="Free sleep calculator. Find bedtimes and wake-up times that end a full 90-minute sleep cycle, with your own fall-asleep time and cycle length. Add the time to your calendar."
+  path="/"
+  h1="Sleep calculator"
+  lede="Wake up between sleep cycles, not in the middle of one."
+  subnav={[{ label: 'Sleep calculator', href: '/', current: true }, { label: 'Nap calculator', href: '/nap/', current: false }]}
+  subnavLabel="Sleep tools"
+  trust={[{ icon: 'circle-check', text: 'Free, no account' }, { icon: 'clock', text: 'Updated Oct 12, 2026' }, { icon: 'info', text: 'How it works and sources', href: '#how-it-works' }]}
+  toc={[
+    { id: 'how-it-works', label: 'How the sleep calculator works' },
+    { id: 'how-much', label: 'How much sleep do you need?' },
+    { id: 'tips', label: 'Tips for using the times' },
+    { id: 'faq', label: 'Questions people ask' },
+  ]}
+  adId="sleep-rail"
+  related={SIBLINGS}
+  jsonLd={[faqJsonLd(faq)]}
+>
+  <section class="sleep-tool" aria-label="Sleep calculator">
+    <Panel as="form" class="sleep-panel" id="sleep-form" aria-label="Sleep calculator settings" novalidate>
+      <SegmentedControl class="js-only" name="mode" legend="I want to" options={[{ value: 'wake', label: 'Wake up at', checked: true }, { value: 'bed', label: 'Go to bed at' }]} />
+      <TextField class="js-only" id="time" label="Wake-up time" time value="07:00">
+        <Button slot="after" variant="secondary" size="lg" id="now" hidden>Now<span class="sr-only">: use the current time</span></Button>
+      </TextField>
+      <Disclosure class="js-only" id="tune" label="Fine-tune">
+        <div class="sleep-tune">
+          <NumberField id="lat" label="Minutes to fall asleep" min={0} max={120} value={15} unit="min" hint="From 0 to 120. We start at 15." decLabel="Fewer minutes to fall asleep" incLabel="More minutes to fall asleep" />
+          <NumberField id="cyc" label="Cycle length" min={80} max={110} value={90} unit="min" hint="From 80 to 110. Most cycles are about 90." decLabel="Shorter cycle" incLabel="Longer cycle" />
+          <div class="sleep-tune__foot">
+            <p class="field__hint">Saved on this device.</p>
+            <Button variant="quiet" size="sm" id="tune-reset" hidden>Reset to 15 and 90</Button>
+          </div>
+        </div>
+      </Disclosure>
+      <p class="notice no-js-only"><Icon name="info" size={16} /><span>These bedtimes are for a 7:00&nbsp;AM <span class="sleep-nowrap">wake-up</span> with 15&nbsp;minutes to fall asleep. Turn on JavaScript to change the time or the settings.</span></p>
+    </Panel>
+
+    <Panel tone="night" as="section" class="sleep-band" labelledby="band-h">
+      <div class="results__head">
+        <h2 id="band-h">Go to bed at</h2>
+        <p class="results__assumption">Based on <span id="band-lat">15</span>&nbsp;min to fall asleep and <span class="sleep-nowrap"><span id="band-cyc">90</span>-minute</span> cycles. <button class="btn btn--quiet btn--inline js-only" type="button" id="band-change">Change</button></p>
+      </div>
+      <div class="sleep-band__out" id="band-out" set:html={defaults}></div>
+      <p class="status status--error sleep-band__error" id="band-error" hidden><Icon name="circle-alert" size={16} /><span>Your browser couldn’t create the calendar file. Use Google Calendar, or set an alarm.</span></p>
+      <p class="results__note js-only" id="band-note">Add to calendar saves an event file for Apple Calendar or Outlook. On Android, use Google Calendar. Whether you get an alert depends on your calendar app, so set an alarm too.</p>
+      <p class="sr-only" id="band-status" role="status"></p>
+    </Panel>
+  </section>
+
+  <Fragment slot="content">
+    <section class="section prose" aria-labelledby="how-it-works">
+      <h2 id="how-it-works">How the sleep calculator works</h2>
+      <p>Your sleep runs in cycles of lighter sleep, deep sleep and REM sleep. One cycle takes about 90&nbsp;minutes for many adults&nbsp;[4]. Waking at the end of a cycle usually feels easier than being pulled out of deep sleep.</p>
+      <ol>
+        <li>Start from the time you need to wake up, for example 7:00&nbsp;AM.</li>
+        <li>Count back whole cycles: 6&nbsp;cycles of 90&nbsp;minutes is 9&nbsp;hours, 5&nbsp;cycles is 7&nbsp;hours&nbsp;30&nbsp;minutes.</li>
+        <li>Subtract the time it takes you to fall asleep, 15&nbsp;minutes unless you change it.</li>
+        <li>The result is when to be in bed with the lights out: 11:15&nbsp;PM for 5&nbsp;cycles, 9:45&nbsp;PM for&nbsp;6.</li>
+      </ol>
+      <p>For a bedtime, the calculator counts forward the same way. It’s a rule of thumb, not medical advice: cycle length varies between people and through the night, and no calculator can see your actual sleep. Use the times as a starting point and adjust to how you feel.</p>
+      <SourceList sources={sources} updated={UPDATED} />
+    </section>
+
+    <AdSlot variant="inline" id="sleep-content-1" />
+
+    <section class="section prose" aria-labelledby="how-much">
+      <h2 id="how-much">How much sleep do you need?</h2>
+      <p>These ranges count all sleep in 24&nbsp;hours, naps included for babies and young children. They come from the CDC&nbsp;[1], based on recommendations from the American Academy of Sleep Medicine&nbsp;[2,&nbsp;3].</p>
+      <Table caption="Recommended sleep per 24 hours, by age" head={['Age', 'Sleep per 24 hours']} rows={ages} />
+      <p class="sleep-footnote">Ranges for newborns and for adults 61&nbsp;and&nbsp;older from the National Sleep Foundation&nbsp;[5].</p>
+    </section>
+
+    <section class="section prose" aria-labelledby="tips">
+      <h2 id="tips">Tips for using the times</h2>
+      <ul>
+        <li>Be in bed with the lights out at the time you pick, not still getting ready.</li>
+        <li>Time how long it takes you to fall asleep for a few nights, then enter it under Fine-tune.</li>
+        <li>If 5 or 6&nbsp;cycles won’t fit tonight, 4&nbsp;cycles beats a random time, and a short nap can help later.</li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="faq">
+      <h2 id="faq">Questions people ask</h2>
+      <Faq items={faq} />
+    </section>
+  </Fragment>
+</ToolLayout>
+
+<script>
+  import { $, band, int, loadTune, saveTune, tuneField, urlTime, writeUrl } from '../components/sleep/client';
+  import { hhmm, sleepRows, sleepStatus } from '../components/sleep/render';
+  import { nextOccurrence, type Mode } from '../components/sleep/sleep-math';
+
+  const KEY = 'ft-sleep-tune';
+  const COPY = {
+    wake: { label: 'Wake-up time', h2: 'Go to bed at', empty: 'Enter a wake-up time to see bedtimes.' },
+    bed: { label: 'Bedtime', h2: 'Wake up at', empty: 'Enter a bedtime to see wake-up times.' },
+  };
+  const time = $<HTMLInputElement>('time'), now = $('now'), reset = $('tune-reset');
+  const radios = [...document.querySelectorAll<HTMLInputElement>('input[name="mode"]')];
+  const timeLabel = document.querySelector<HTMLLabelElement>('label[for="time"]')!;
+  let mode: Mode = new URLSearchParams(location.search).get('mode') === 'bed' ? 'bed' : 'wake';
+
+  const results = band(() => COPY[mode].empty, sleepStatus);
+  const saved = loadTune(KEY);
+  const changed = () => { saveTune(KEY, { lat: lat.value(), cyc: cyc.value() }); update(true); };
+  const lat = tuneField('lat', int(saved.lat, 0, 120) ?? 15, (n) => `Minutes to fall asleep must be 0 to 120, so we used ${n}.`, changed);
+  const cyc = tuneField('cyc', int(saved.cyc, 80, 110) ?? 90, (n) => `Cycle length must be 80 to 110 minutes, so we used ${n}.`, changed);
+
+  function setMode(m: Mode) {
+    mode = m;
+    radios.forEach((r) => { r.checked = r.value === m; });
+    timeLabel.textContent = COPY[m].label;
+    $('band-h').textContent = COPY[m].h2;
+    now.hidden = m === 'wake';
+  }
+
+  function update(announce: boolean) {
+    const l = lat.value(), c = cyc.value();
+    $('band-lat').textContent = String(l);
+    $('band-cyc').textContent = String(c);
+    reset.hidden = l === 15 && c === 90;
+    // A bedtime of "now" means tonight, so the current minute counts as not yet passed (as on the nap page).
+    const from = new Date(Date.now() - (mode === 'bed' ? 60_000 : 0));
+    results.render(time.value ? sleepRows(mode, nextOccurrence(time.value, from), l, c) : null, announce);
+  }
+
+  const edited = () => { update(true); writeUrl({ mode, t: time.value }); };
+  radios.forEach((r) => r.addEventListener('change', () => {
+    setMode(r.value as Mode);
+    time.value = mode === 'wake' ? '07:00' : hhmm(new Date());
+    edited();
+  }));
+  time.addEventListener('input', edited);
+  now.addEventListener('click', () => { time.value = hhmm(new Date()); edited(); });
+  $('band-change').addEventListener('click', () => { $<HTMLDetailsElement>('tune').open = true; $('lat').focus(); });
+  reset.addEventListener('click', () => { lat.set(15); cyc.set(90); $('lat').focus(); });
+  $('sleep-form').addEventListener('submit', (e) => e.preventDefault());
+
+  setMode(mode);
+  time.value = urlTime() ?? (mode === 'bed' ? hhmm(new Date()) : '07:00');
+  update(false);
+</script>

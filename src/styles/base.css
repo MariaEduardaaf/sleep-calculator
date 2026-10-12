@@ -1,0 +1,102 @@
+/* Reset, elements, focus, utilities and reduced motion (DESIGN-SYSTEM 2.3, 2.5, 2.7).
+   Values come from tokens.css only. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans-stack);
+  font-size: var(--fs-md);
+  line-height: var(--lh-md);
+  font-weight: var(--fw-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure, blockquote, fieldset { margin: 0; }
+fieldset { padding: 0; border: 0; min-width: 0; }
+legend { padding: 0; }
+ul[class], ol[class] { list-style: none; padding: 0; }
+
+h1 { font-size: var(--fs-2xl); line-height: var(--lh-2xl); font-weight: var(--fw-bold); letter-spacing: -0.02em; }
+h2 { font-size: var(--fs-xl); line-height: var(--lh-xl); font-weight: var(--fw-bold); letter-spacing: -0.01em; }
+h3 { font-size: var(--fs-lg); line-height: var(--lh-lg); font-weight: var(--fw-bold); }
+h1, h2, h3 { text-wrap: balance; }
+p, li, dd { text-wrap: pretty; }
+:is(h2, h3)[id] { scroll-margin-top: var(--space-5); }
+strong, b { font-weight: var(--fw-bold); }
+
+img { display: block; max-width: 100%; height: auto; }
+
+button, input, select, textarea { font: inherit; color: inherit; margin: 0; }
+button { background: none; border: 0; padding: 0; cursor: pointer; text-align: inherit; }
+
+/* Links inside text are always underlined (2.7); navigation lists turn this off. */
+a {
+  color: var(--action);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--bw);
+  text-underline-offset: 0.18em;
+}
+@media (hover: hover) { a:hover { text-decoration-thickness: var(--bw-2); } }
+
+/* One focus style, remapped per surface through --focus (CRAFT-14). */
+:focus-visible { outline: var(--focus-w) solid var(--focus); outline-offset: var(--focus-offset); }
+[tabindex="-1"]:focus { outline: none; }
+
+::selection { background: var(--action-tint); color: var(--action-tint-ink); }
+
+[hidden] { display: none !important; }
+
+/* Utilities (2.7) */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.num { font-variant-numeric: tabular-nums; }
+/* A standalone text link whose 44px hit area is an overlay, so the line keeps its height (same technique as .btn--inline, N1). */
+.hit { position: relative; display: inline-block; }
+.hit::before { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--control-sm)); height: var(--control-sm); translate: -50% -50%; }
+.container {
+  box-sizing: content-box;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+html:not(.js) .js-only { display: none !important; }
+html.js .no-js-only { display: none !important; }
+
+/* Text roles */
+.lede { font-size: var(--fs-md); line-height: var(--lh-prose); color: var(--muted); max-width: var(--measure-lede); }
+.label { font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-bold); color: var(--ink); }
+
+/* Running text: 17/28, 16px between blocks, 8px between list items, markers on the left edge.
+   :where keeps this at one class, so kit text roles inside prose (byline, notice, status) keep their own line height. */
+.prose { max-width: var(--measure); }
+.prose :where(p, li) { line-height: var(--lh-prose); }
+.prose > * + * { margin-top: var(--space-4); }
+.prose > h2 + *, .prose > h3 + * { margin-top: var(--space-4); }
+.prose :is(ul, ol):not([class]) { padding-left: var(--space-5); }
+.prose li + li { margin-top: var(--space-2); }
+.prose li::marker { color: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::backdrop { animation: none !important; transition: none !important; }
+}

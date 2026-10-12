@@ -1,0 +1,35 @@
+---
+// DESIGN-SYSTEM 3.7, pill-select. While the value is the first option the pill shows only its label
+// ("Meal"); once set it shows "Meal: Desserts" and the selected look (is-active).
+import Icon from './Icon.astro';
+
+interface Option { value: string; label: string }
+interface Props {
+  id: string;
+  label: string;
+  options: Option[];
+  value?: string;
+  class?: string;
+}
+const { id, label, options, value, class: cls } = Astro.props;
+const current = options.find((o) => o.value === value);
+const active = Boolean(current && current !== options[0]);
+---
+<div class:list={['pill-select', active && 'is-active', cls]}>
+  <span class="pill-select__text"><label for={id}>{label}</label><span class="pill-select__value" aria-hidden="true">{active ? `: ${current!.label}` : ''}</span></span>
+  <select id={id}>
+    {options.map((o) => <option value={o.value} selected={o === current}>{o.label}</option>)}
+  </select>
+  <Icon name="chevron-down" class="pill-select__chevron" />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLSelectElement>('.pill-select select').forEach((s) => {
+    s.addEventListener('change', () => {
+      const pill = s.closest('.pill-select')!;
+      const active = s.selectedIndex > 0;
+      pill.classList.toggle('is-active', active);
+      pill.querySelector('.pill-select__value')!.textContent = active ? `: ${s.options[s.selectedIndex].text}` : '';
+    });
+  });
+</script>

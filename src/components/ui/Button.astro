@@ -1,0 +1,41 @@
+---
+// DESIGN-SYSTEM 3.1. <button> for actions, <a> (href) for navigation. One primary per view.
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+interface Props extends Omit<HTMLAttributes<'button'>, 'type'> {
+  variant: 'primary' | 'secondary' | 'quiet' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+  /** Quiet only: a button inside a line of running text (44px hit area from an overlay). */
+  inline?: boolean;
+  href?: string;
+  /** Opens another site: true, or the destination's name for the hidden text ("Google Maps"). */
+  external?: boolean | string;
+  icon?: IconName;
+  iconEnd?: IconName;
+  block?: boolean;
+  type?: 'button' | 'submit' | 'reset';
+  /** Loading state: spinner in place of the icon, aria-busy and disabled (the label is the progress text). */
+  loading?: boolean;
+}
+
+const {
+  variant, size = 'md', inline = false, href, external, icon, iconEnd, block = false, type = 'button',
+  loading = false, disabled, class: cls, ...rest
+} = Astro.props;
+
+const classes = [
+  'btn', `btn--${variant}`, size !== 'md' && `btn--${size}`, inline && 'btn--inline', block && 'btn--block', cls,
+];
+const destination = typeof external === 'string' ? external : external && href ? new URL(href).hostname.replace(/^www\./, '') : '';
+---
+{href ? (
+  <a class:list={classes} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined} {...rest as HTMLAttributes<'a'>}>
+    {icon && <Icon name={icon} />}<span><slot /></span>{external && <span class="sr-only">, opens {destination} in a new tab</span>}{external ? <Icon name="external-link" size={16} /> : iconEnd && <Icon name={iconEnd} />}
+  </a>
+) : (
+  <button class:list={classes} type={type} aria-busy={loading ? 'true' : undefined} disabled={loading || disabled} {...rest}>
+    {loading ? <Icon name="loader-circle" class="btn__spinner" /> : icon && <Icon name={icon} />}<span><slot /></span>{iconEnd && <Icon name={iconEnd} />}
+  </button>
+)}

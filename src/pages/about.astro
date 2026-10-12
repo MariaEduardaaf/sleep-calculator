@@ -1,0 +1,49 @@
+---
+// site-pages 8.1. Facts about the operator come only from src/site.ts; while one is empty, a PrototypeNotice.
+import ContentPage from '../layouts/ContentPage.astro';
+import PrototypeNotice from '../components/ui/PrototypeNotice.astro';
+import { SITE } from '../site';
+---
+<ContentPage
+  title={`About ${SITE.name}`}
+  description={`${SITE.name} is a free sleep calculator and nap calculator. No account, no app.`}
+  path="/about/"
+  h1={`About ${SITE.name}`}
+  lede="Bedtimes and wake-up times that end a full sleep cycle, free and without an account."
+  updated="2026-10-12"
+>
+  <section class="section prose" aria-labelledby="make">
+    <h2 id="make">What we make</h2>
+    <p>{SITE.name} is a small web tool that answers one everyday question in seconds: when to go to bed, or when to wake up, so you wake between sleep cycles instead of in the middle of one. It includes a nap calculator, works in any browser, and needs no account and nothing to install.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="why">
+    <h2 id="why">Why we built it</h2>
+    <p>Most apps for this question want an account, a download or a subscription before they answer. We think the answer should come first, with the working shown so you can judge it yourself.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="free">
+    <h2 id="free">How we keep it free</h2>
+    <p>{SITE.ads ? 'We show' : 'We plan to show'} a few clearly labeled ads. They never sit inside a tool, and advertisers have no say in the results. We don’t sell your data, and the tools don’t send your settings anywhere.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="sources">
+    <h2 id="sources">Where the information comes from</h2>
+    <ul>
+      <li><strong>Sleep:</strong> arithmetic on sleep cycles, with recommendations from the CDC and the American Academy of Sleep Medicine.</li>
+    </ul>
+    <p>Read <a href="/method/">how it works</a>.</p>
+  </section>
+
+  <section class="section prose" aria-labelledby="who">
+    <h2 id="who">Who runs {SITE.name}</h2>
+    {SITE.owner && SITE.ownerLocation
+      ? <p>{SITE.name} is run by {SITE.owner}, based in {SITE.ownerLocation}.</p>
+      : <PrototypeNotice text="the owner’s name and location go here before launch." />}
+  </section>
+
+  <section class="section prose" aria-labelledby="touch">
+    <h2 id="touch">Get in touch</h2>
+    <p>Spotted a mistake or have an idea? <a href="/contact/">Contact us</a>.</p>
+  </section>
+</ContentPage>

@@ -1,0 +1,15 @@
+---
+// DESIGN-SYSTEM 3.28. One pictogram per plate, one glyph size per tile: 20 in 32, 24 in 40, 28 in 48 (CRAFT-01).
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+interface Props {
+  icon: IconName;
+  size: 'sm' | 'md' | 'lg';
+  tone?: 'default' | 'neutral' | 'inverse';
+  class?: string;
+}
+const { icon, size, tone = 'default', class: cls } = Astro.props;
+const GLYPH = { sm: 20, md: 24, lg: 28 } as const;
+---
+<span class:list={['tile', `tile--${size}`, tone !== 'default' && `tile--${tone}`, cls]} aria-hidden="true"><Icon name={icon} size={GLYPH[size]} /></span>

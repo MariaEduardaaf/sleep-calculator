@@ -1,0 +1,28 @@
+---
+// DESIGN-SYSTEM 3.16. Open with openSheet(dialog, opener) from sheet.ts; [data-close], Escape and a tap on the
+// backdrop close it. Below 1024px only, one at a time.
+// Slot "action" replaces the head's Close button (the full-screen map's "Show list"); give it data-close.
+import IconButton from './IconButton.astro';
+
+interface Props {
+  id: string;
+  title: string;
+  /** Full screen (the WiFi map). */
+  full?: boolean;
+  class?: string;
+}
+const { id, title, full = false, class: cls } = Astro.props;
+---
+<dialog class:list={['sheet', full && 'sheet--full', cls]} id={id} aria-labelledby={`${id}-title`}>
+  <div class="sheet__head">
+    <h2 class="sheet__title" id={`${id}-title`} tabindex="-1">{title}</h2>
+    <slot name="action"><IconButton icon="x" label="Close" quiet data-close /></slot>
+  </div>
+  <div class="sheet__body"><slot /></div>
+  {Astro.slots.has('foot') && <div class="sheet__foot"><slot name="foot" /></div>}
+</dialog>
+
+<script>
+  import { initSheets } from './sheet';
+  initSheets();
+</script>

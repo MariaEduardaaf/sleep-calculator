@@ -1,0 +1,25 @@
+---
+// DESIGN-SYSTEM 3.14. First column is the row header. `numeric` right-aligns number-only columns.
+// `scroll` makes the wrapper a focusable, labeled region for tables that can overflow at 320px.
+interface Props {
+  caption: string;
+  head: string[];
+  rows: string[][];
+  numeric?: number[];
+  scroll?: boolean;
+  class?: string;
+}
+const { caption, head, rows, numeric = [], scroll = false, class: cls } = Astro.props;
+const num = (i: number) => (numeric.includes(i) ? 'num' : undefined);
+---
+<div class:list={['table-wrap', cls]} tabindex={scroll ? 0 : undefined} role={scroll ? 'region' : undefined} aria-label={scroll ? caption : undefined}>
+  <table class="table">
+    <caption>{caption}</caption>
+    <thead><tr>{head.map((h, i) => <th scope="col" class={num(i)}>{h}</th>)}</tr></thead>
+    <tbody>
+      {rows.map(([first, ...cells]) => (
+        <tr><th scope="row">{first}</th>{cells.map((c, i) => <td class={num(i + 1)}>{c}</td>)}</tr>
+      ))}
+    </tbody>
+  </table>
+</div>

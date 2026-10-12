@@ -1,0 +1,21 @@
+---
+// DESIGN-SYSTEM 3.21. Content pages and hubs: H1, lede, "Last updated".
+interface Props {
+  h1: string;
+  lede?: string;
+  /** ISO date, shown as "October 12, 2026". */
+  updated?: string;
+  /** The words before the date; the accessibility page says "Last reviewed". */
+  updatedLabel?: string;
+  /** A real reviewer's name (SITE.editor) adds "Reviewed by {name}." after the date. Empty adds nothing: no invented people. */
+  reviewedBy?: string;
+  class?: string;
+}
+const { h1, lede, updated, updatedLabel = 'Last updated', reviewedBy, class: cls } = Astro.props;
+const long = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+<header class:list={['page-header', cls]}>
+  <h1>{h1}</h1>
+  {lede && <p class="lede">{lede}</p>}
+  {updated && <p class="page-header__meta">{updatedLabel} <time datetime={updated}>{long(updated)}</time>{reviewedBy && `. Reviewed by ${reviewedBy}.`}</p>}
+</header>

@@ -1,0 +1,40 @@
+---
+// site-pages 8.2. No form: a static site has nowhere to send it. The address comes only from SITE.contactEmail.
+import ContentPage from '../layouts/ContentPage.astro';
+import Button from '../components/ui/Button.astro';
+import PrototypeNotice from '../components/ui/PrototypeNotice.astro';
+import { SITE } from '../site';
+---
+<ContentPage
+  title={`Contact | ${SITE.name}`}
+  description={`How to reach ${SITE.name} with questions, corrections and ideas.`}
+  path="/contact/"
+  h1="Contact"
+  lede="Questions, corrections and ideas are all welcome."
+  updated="2026-10-12"
+>
+  {SITE.contactEmail ? (
+    <p class="contact-email">
+      <Button variant="primary" href={`mailto:${SITE.contactEmail}`}>Email us</Button>
+      <span class="contact-email__address">{SITE.contactEmail}</span>
+    </p>
+  ) : <PrototypeNotice text="the contact email goes here before launch." />}
+
+  <section class="section prose" aria-labelledby="helps">
+    <h2 id="helps">What helps us help you</h2>
+    <ul>
+      <li>The sleep or nap calculator: the time you entered and what you expected.</li>
+    </ul>
+  </section>
+
+  <section class="section prose" aria-labelledby="expect">
+    <h2 id="expect">What to expect</h2>
+    <p>We read every message, and we never add you to a mailing list.</p>
+  </section>
+</ContentPage>
+
+<style is:global>
+  /* The address stays visible as text next to the mailto button (site-pages 13). */
+  .contact-email { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+  .contact-email__address { overflow-wrap: anywhere; }
+</style>

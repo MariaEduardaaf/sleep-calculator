@@ -1,0 +1,45 @@
+---
+// DESIGN-SYSTEM 5.1, ToolPage. Order: [Breadcrumbs], ToolHeader ([SubNav], H1, lede), the tool (default slot),
+// TrustStrip, then the content column (slot "content") ending with RelatedTools, and the rail.
+// h1 and lede are optional for one case: a tool whose H1 must sit inside its own grid (WiFi city, wifi-city 6.4)
+// omits them and renders <ToolHeader> as the first child of its tool section.
+import Base, { type BaseProps } from './Base.astro';
+import ContentLayout, { type TocItem } from './ContentLayout.astro';
+import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
+import ToolHeader from '../components/ui/ToolHeader.astro';
+import Trust, { type TrustItem } from '../components/ui/Trust.astro';
+import RelatedTools, { type RelatedTool } from '../components/ui/RelatedTools.astro';
+import type { SubNavItem } from '../components/ui/SubNav.astro';
+import { breadcrumbJsonLd, type Crumb } from '../components/ui/jsonld';
+
+interface Props extends BaseProps {
+  h1?: string;
+  lede?: string;
+  /** Visible crumbs plus their BreadcrumbList JSON-LD. Sleep, nap, the WiFi hub and the recipe finder pass none. */
+  breadcrumbs?: Crumb[];
+  subnav?: SubNavItem[];
+  /** The SubNav's accessible name, e.g. "Sleep tools". */
+  subnavLabel?: string;
+  trust: TrustItem[];
+  /** An id on the TrustStrip, the target of a skip link past the tool (WiFi city "Skip the list" to #after-list). */
+  trustId?: string;
+  toc: TocItem[];
+  adId: string;
+  related: RelatedTool[];
+}
+const { h1, lede = '', breadcrumbs, subnav, subnavLabel, trust, trustId, toc, adId, related, jsonLd = [], class: cls, ...base } = Astro.props;
+const ld = breadcrumbs ? [...jsonLd, breadcrumbJsonLd(breadcrumbs)] : jsonLd;
+---
+<Base {...base} jsonLd={ld}>
+  <Fragment slot="head"><slot name="head" /></Fragment>
+  <div class:list={['container', 'tool-page', cls]}>
+    {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
+    {h1 && <ToolHeader h1={h1} lede={lede} subnav={subnav} subnavLabel={subnavLabel} />}
+    <slot />
+    <Trust variant="strip" items={trust} class="tool-page__trust" id={trustId} tabindex={trustId ? -1 : undefined} />
+    <ContentLayout toc={toc} adId={adId} class="tool-page__content">
+      <slot name="content" />
+      <RelatedTools items={related} />
+    </ContentLayout>
+  </div>
+</Base>

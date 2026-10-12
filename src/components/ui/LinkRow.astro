@@ -1,0 +1,21 @@
+---
+// DESIGN-SYSTEM 3.31. The whole row is one link; the hover fill bleeds 12px past the text column.
+import Icon from './Icon.astro';
+import Tile from './Tile.astro';
+import type { IconName } from './icons';
+
+interface Props {
+  href: string;
+  icon: IconName;
+  title: string;
+  line: string;
+  external?: boolean;
+  class?: string;
+}
+const { href, icon, title, line, external = false, class: cls } = Astro.props;
+---
+<a class:list={['linkrow', cls]} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+  <Tile icon={icon} size="sm" />
+  <span class="linkrow__text"><span class="linkrow__title">{title}</span><span class="linkrow__line">{line}</span>{external && <span class="sr-only">, opens in a new tab</span>}</span>
+  <Icon name={external ? 'external-link' : 'chevron-right'} class="linkrow__end" />
+</a>

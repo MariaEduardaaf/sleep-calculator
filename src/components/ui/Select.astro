@@ -1,0 +1,26 @@
+---
+// DESIGN-SYSTEM 3.4. Native select; states as TextField. Extra attributes go to the <select>.
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+
+interface Option { value: string; label: string }
+interface Props extends Omit<HTMLAttributes<'select'>, 'id' | 'class'> {
+  id: string;
+  label: string;
+  options: Option[];
+  value?: string;
+  hint?: string;
+  class?: string;
+}
+const { id, label, options, value, hint, class: cls, ...rest } = Astro.props;
+---
+<div class:list={['field', cls]}>
+  <label class="field__label" for={id}>{label}</label>
+  <div class="select">
+    <select id={id} aria-describedby={hint ? `${id}-hint` : undefined} {...rest}>
+      {options.map((o) => <option value={o.value} selected={o.value === value}>{o.label}</option>)}
+    </select>
+    <Icon name="chevron-down" class="select__chevron" />
+  </div>
+  {hint && <p class="field__hint" id={`${id}-hint`}>{hint}</p>}
+</div>

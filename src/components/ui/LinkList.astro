@@ -1,0 +1,17 @@
+---
+// DESIGN-SYSTEM 3.31. Grouped plain links: an H3 per group, 44px link rows.
+export interface LinkGroup { title: string; links: { label: string; href: string }[] }
+interface Props {
+  groups: LinkGroup[];
+  class?: string;
+}
+const { groups, class: cls } = Astro.props;
+---
+<div class:list={['linklist', cls]}>
+  {groups.map((g) => (
+    <div class="linklist__group">
+      <h3 class="linklist__title">{g.title}</h3>
+      <ul>{g.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+    </div>
+  ))}
+</div>

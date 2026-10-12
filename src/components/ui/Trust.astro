@@ -1,0 +1,24 @@
+---
+// DESIGN-SYSTEM 3.30. `strip` under each tool (14/20), `list` on home (17/24). Items are short facts; one may
+// link to the page's "How it works" (always underlined).
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+export interface TrustItem { icon: IconName; text: string; href?: string }
+interface Props {
+  variant: 'strip' | 'list';
+  items: TrustItem[];
+  class?: string;
+  [attr: string]: unknown;
+}
+const { variant, items, class: cls, ...rest } = Astro.props;
+const size = variant === 'strip' ? 16 : 20;
+---
+<ul class:list={['trust', `trust--${variant}`, cls]} {...rest}>
+  {items.map((i) => (
+    <li class="trust__item">
+      <Icon name={i.icon} size={size} class={i.icon === 'circle-check' ? 'trust__icon trust__icon--good' : 'trust__icon'} />
+      {i.href ? <a class="hit" href={i.href}>{i.text}</a> : <span>{i.text}</span>}
+    </li>
+  ))}
+</ul>

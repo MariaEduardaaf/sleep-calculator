@@ -1,0 +1,32 @@
+---
+// DESIGN-SYSTEM 3.34, Method & sources: H3 "Sources", a numbered list (linked title, publisher) and the byline.
+// "Reviewed by" appears only when SITE.editor is set: no invented people.
+import Icon from './Icon.astro';
+import { SITE } from '../../site';
+
+/** `href` and `publisher` may be left out for a source that is not a page ("The publisher named on each recipe card"). */
+export interface Source { title: string; publisher?: string; href?: string }
+interface Props {
+  sources: Source[];
+  /** ISO date of the last update. Leave it out to drop the byline (the method page dates itself in its header). */
+  updated?: string;
+  /** ISO date of the last data refresh (WiFi): "Data refreshed {date}." opens the byline. */
+  refreshed?: string;
+  id?: string;
+  class?: string;
+}
+const { sources, updated, refreshed, id = 'sources', class: cls } = Astro.props;
+const long = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const host = (u: string) => new URL(u).hostname.replace(/^www\./, '');
+---
+<div class:list={['sources-block', cls]}>
+  <h3>Sources</h3>
+  <ol class="sources" id={id}>
+    {sources.map((s) => (
+      <li>{s.href ? <a href={s.href} target="_blank" rel="noopener">{s.title}<span class="sr-only">, opens {host(s.href)} in a new tab</span><Icon name="external-link" size={16} /></a> : s.title}{/[.?!]$/.test(s.title) ? '' : '.'}{s.publisher && ` ${s.publisher}.`}</li>
+    ))}
+  </ol>
+  {(updated || refreshed) && (
+    <p class="byline">{refreshed && <>Data refreshed <time datetime={refreshed}>{long(refreshed)}</time>.</>}{refreshed && updated && ' '}{updated && <>Last updated <time datetime={updated}>{long(updated)}</time>.{SITE.editor && ` Reviewed by ${SITE.editor}.`}</>}</p>
+  )}
+</div>

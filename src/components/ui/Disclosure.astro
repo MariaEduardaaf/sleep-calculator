@@ -1,0 +1,19 @@
+---
+// DESIGN-SYSTEM 3.13. Native <details>; the chevron is an aria-hidden SVG, never generated text.
+import Icon from './Icon.astro';
+
+interface Props {
+  label: string;
+  value?: string;
+  open?: boolean;
+  class?: string;
+  id?: string;
+}
+const { label, value, open = false, class: cls, id } = Astro.props;
+---
+<details class:list={['disclosure', cls]} open={open} id={id}>
+  <summary class="disclosure__summary">
+    <span class="disclosure__label">{label}</span>{value && <span class="disclosure__value">{value}</span>}<Icon name="chevron-down" class="disclosure__chevron" />
+  </summary>
+  <div class="disclosure__body"><slot /></div>
+</details>
