@@ -58,6 +58,8 @@
 @media (min-width: 64rem) { .logo__mark { width: var(--tile-sm); height: var(--tile-sm); } }
 
 .nav { display: flex; align-self: stretch; gap: var(--space-2); }
+/* Phones: the product name needs the row, so the two site links live in the footer only (they are on every page there). */
+@media (max-width: 29.99rem) { .site-header .nav { display: none; } }
 .nav a {
   display: inline-flex; flex-direction: column; justify-content: center;
   height: var(--header-h); /* 1px taller than the bar, so the current bar sits on the header's bottom edge */
