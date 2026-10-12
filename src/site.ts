@@ -3,8 +3,6 @@
 
 export interface Site {
   name: string;
-  /** The tool's pictogram, drawn white on the blue tile: logo, favicon, OG image. */
-  mark: 'moon' | 'wifi' | 'utensils';
   tagline: string;
   url: string;
   owner: string;
@@ -20,7 +18,6 @@ export interface Site {
 
 export const SITE: Site = {
   name: 'Bedtime Calculator',
-  mark: 'moon',
   tagline: 'Bedtimes and wake-up times that end a full sleep cycle. Free, no account.', // OWNER TO FILL: placeholder product name (also the wordmark)
   url: 'https://sleep-calculator.h68zvmzrnc.workers.dev', // demo on Cloudflare; OWNER TO FILL: the final domain, also `site` in astro.config.mjs
   owner: 'Maria Eduarda', // person who runs the site (About)
@@ -52,3 +49,6 @@ const ALL_SIBLINGS: Sibling[] = [
   { icon: 'utensils', title: 'Pantry Recipe Finder', line: 'See what you can cook with what’s in your kitchen.', href: 'https://recipe-finder.h68zvmzrnc.workers.dev/' },
 ];
 export const SIBLINGS = ALL_SIBLINGS.filter((s) => s.href);
+
+/** The wordmark in two weights, as approved with the logo: the strong part, then the light part. */
+export const WORDMARK: [string, string] = ['Bedtime', 'Calculator'];

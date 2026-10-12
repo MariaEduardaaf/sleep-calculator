@@ -16,9 +16,10 @@
   .og { position: relative; width: 1200px; height: 630px; padding: 80px; }
   .lockup { display: flex; align-items: center; gap: 20px; }
   .lockup svg { width: 72px; height: 72px; }
+  .word b { font-weight: 700; } .word .light { font-weight: 400; color: var(--muted); }
   .word { font-size: 52px; line-height: 72px; font-weight: 700; letter-spacing: -0.01em; }
   .tagline { margin-top: 56px; max-width: 900px; font-size: 40px; line-height: 52px; font-weight: 400; color: var(--muted); }
-  .promise { position: absolute; left: 80px; bottom: 80px; font-size: 28px; line-height: 36px; font-weight: 700; color: var(--action); }
+  .promise { position: absolute; left: 80px; bottom: 80px; font-size: 28px; line-height: 36px; font-weight: 700; color: #1A2142; }
   .plate { fill: var(--action); } .stroke { stroke: var(--on-action); }
   .touch { display: none; }
   body:has(.touch:target) .touch { display: block; }
@@ -28,10 +29,10 @@
 </head>
 <body>
   <div class="og">
-    <div class="lockup"><svg viewBox="0 0 32 32" aria-hidden="true"><rect class="plate" width="32" height="32" rx="8"/><g transform="translate(6 6) scale(0.8333)" fill="none" class="stroke" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></g></svg><span class="word">Bedtime Calculator</span></div>
+    <div class="lockup"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#1A2142"/><mask id="om"><rect width="48" height="48" fill="#fff"/><circle cx="29.5" cy="12.5" r="8.6" fill="#000"/></mask><circle cx="23" cy="18" r="10.5" fill="#F2D27F" mask="url(#om)"/><path d="M12 37a4 4 0 0 1 8 0a4 4 0 0 1 8 0a4 4 0 0 1 8 0" fill="none" stroke="#F2D27F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="word"><b>Bedtime</b> <span class="light">Calculator</span></span></div>
     <p class="tagline">Bedtimes and wake-up times that end a full sleep cycle.</p>
     <p class="promise">Free. No account, no app.</p>
   </div>
-  <div class="touch" id="touch"><svg viewBox="0 0 32 32" aria-hidden="true"><rect class="plate" width="32" height="32"/><g transform="translate(6 6) scale(0.8333)" fill="none" class="stroke" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></g></svg></div>
+  <div class="touch" id="touch"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" fill="#1A2142"/><mask id="tm"><rect width="48" height="48" fill="#fff"/><circle cx="29.5" cy="12.5" r="8.6" fill="#000"/></mask><circle cx="23" cy="18" r="10.5" fill="#F2D27F" mask="url(#tm)"/><path d="M12 37a4 4 0 0 1 8 0a4 4 0 0 1 8 0a4 4 0 0 1 8 0" fill="none" stroke="#F2D27F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 </body>
 </html>

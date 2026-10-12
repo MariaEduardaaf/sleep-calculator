@@ -44,9 +44,6 @@
 
 .logo { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--control-sm); min-width: var(--control-sm); color: var(--ink); text-decoration: none; }
 .logo__mark { flex: none; width: var(--icon-xl); height: var(--icon-xl); }
-.mark__plate { fill: var(--action); }
-.mark__glyph { fill: var(--on-action); }
-.mark__stroke { stroke: var(--on-action); }
 .logo__word {
   display: none;
   font-size: var(--fs-lg); line-height: var(--lh-lg); font-weight: var(--fw-bold); letter-spacing: -0.01em;
@@ -54,6 +51,9 @@
      x-height 0.517em, so in a 28px line the x-height's middle sits 0.104em below the box's middle. */
   translate: 0 -0.104em;
 }
+.logo__light { font-weight: var(--fw-regular); color: var(--muted); }
+/* Dark pages: a hairline edge so the logo tile never melts into the background (the night tile is close to the dark page). */
+@media (prefers-color-scheme: dark) { .logo__mark { border-radius: 25%; box-shadow: 0 0 0 var(--bw) var(--line-strong); } }
 @media (min-width: 24rem) { .logo__word { display: inline; } }
 @media (min-width: 64rem) { .logo__mark { width: var(--tile-sm); height: var(--tile-sm); } }
 

@@ -1,7 +1,7 @@
 ---
 // CRAFT-02: the drawn mark plus the wordmark (hidden below 384px, where the mark stands alone).
 import { markSvg } from '../ui/icons';
-import { SITE } from '../../site';
+import { SITE, WORDMARK } from '../../site';
 
 interface Props {
   /** The footer brand block shows the same lockup without the link. */
@@ -11,7 +11,7 @@ interface Props {
 const { as = 'a', class: cls } = Astro.props;
 ---
 {as === 'a' ? (
-  <a class:list={['logo', cls]} href="/" aria-label={`${SITE.name} home`}><Fragment set:html={markSvg()} /><span class="logo__word">{SITE.name}</span></a>
+  <a class:list={['logo', cls]} href="/" aria-label={`${SITE.name} home`}><Fragment set:html={markSvg()} /><span class="logo__word"><span class="logo__strong">{WORDMARK[0]}</span> <span class="logo__light">{WORDMARK[1]}</span></span></a>
 ) : (
-  <div class:list={['logo', cls]}><Fragment set:html={markSvg()} /><span class="logo__word">{SITE.name}</span></div>
+  <div class:list={['logo', cls]}><Fragment set:html={markSvg()} /><span class="logo__word"><span class="logo__strong">{WORDMARK[0]}</span> <span class="logo__light">{WORDMARK[1]}</span></span></div>
 )}
