@@ -43,3 +43,7 @@ pnpm build        # static site in dist/
 ## Status
 
 A working prototype. Before a public launch, fill in the fields marked `OWNER TO FILL` in `src/site.ts` (name, domain, contact and host), then set `prototypeNotices` to `false`. The build fails while a required field is empty.
+
+## License
+
+No license: © 2026 Maria Eduarda, all rights reserved. You're welcome to read the code; please ask before reusing it.

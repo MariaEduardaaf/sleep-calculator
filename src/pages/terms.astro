@@ -61,6 +61,8 @@ const H = Object.fromEntries(toc.map((t) => [t.id, t.label])); // headings and "
     <h2 id="contact">{H.contact}</h2>
     {SITE.contactEmail
       ? <p>Questions about these terms? Email <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>.</p>
-      : <PrototypeNotice text="the contact email goes here before launch." />}
+      : SITE.contactUrl
+        ? <p>Questions about these terms? <a href={SITE.contactUrl}>Open an issue on GitHub</a>. Issues are public, so don’t include personal details.</p>
+        : <PrototypeNotice text="the contact email goes here before launch." />}
   </section>
 </ContentPage>

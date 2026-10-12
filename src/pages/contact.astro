@@ -1,5 +1,5 @@
 ---
-// site-pages 8.2. No form: a static site has nowhere to send it. The address comes only from SITE.contactEmail.
+// site-pages 8.2. No form: a static site has nowhere to send it. Contact comes only from SITE.contactEmail or, with no public email, SITE.contactUrl.
 import ContentPage from '../layouts/ContentPage.astro';
 import Button from '../components/ui/Button.astro';
 import PrototypeNotice from '../components/ui/PrototypeNotice.astro';
@@ -18,6 +18,11 @@ import { SITE } from '../site';
       <Button variant="primary" href={`mailto:${SITE.contactEmail}`}>Email us</Button>
       <span class="contact-email__address">{SITE.contactEmail}</span>
     </p>
+  ) : SITE.contactUrl ? (
+    <>
+      <p class="contact-email"><Button variant="primary" href={SITE.contactUrl} external>Open an issue on GitHub</Button></p>
+      <p class="muted">Issues are public, so please don’t include personal details. You’ll need a free GitHub account.</p>
+    </>
   ) : <PrototypeNotice text="the contact email goes here before launch." />}
 
   <section class="section prose" aria-labelledby="helps">

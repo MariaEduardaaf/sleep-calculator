@@ -10,6 +10,8 @@ export interface Site {
   owner: string;
   ownerLocation: string;
   contactEmail: string;
+  /** Where people get in touch when there is no public email: the project's GitHub issues. */
+  contactUrl: string;
   host: string;
   editor: string;
   ads: boolean;
@@ -21,20 +23,22 @@ export const SITE: Site = {
   mark: 'moon',
   tagline: 'Bedtimes and wake-up times that end a full sleep cycle. Free, no account.', // OWNER TO FILL: placeholder product name (also the wordmark)
   url: 'https://sleep-calculator.h68zvmzrnc.workers.dev', // demo on Cloudflare; OWNER TO FILL: the final domain, also `site` in astro.config.mjs
-  owner: '', // OWNER TO FILL: person or company that runs the site (About)
-  ownerLocation: '', // OWNER TO FILL: city and state, or country (About)
-  contactEmail: '', // OWNER TO FILL: public contact address (Contact, Privacy, Terms)
-  host: '', // OWNER TO FILL: hosting provider (Privacy, "Server logs")
+  owner: 'Maria Eduarda', // person who runs the site (About)
+  ownerLocation: 'Alicante, Spain', // (About)
+  contactEmail: '', // no public email by choice; contact goes to GitHub issues
+  contactUrl: 'https://github.com/MariaEduardaaf/sleep-calculator/issues/new',
+  host: 'Cloudflare', // hosting provider (Privacy, "Server logs")
   editor: '', // OWNER TO FILL (optional): a real reviewer's name for bylines, or leave empty
   ads: false, // OWNER TO FILL: true only after AdSense approval
-  prototypeNotices: true, // OWNER TO FILL: false at launch; the build then fails while an owner field is empty
+  prototypeNotices: false, // the build fails while an owner field is empty
 };
 
 // SP-04: with the notices off, an empty owner field must stop the build, naming the field.
 if (!SITE.prototypeNotices) {
-  for (const field of ['owner', 'ownerLocation', 'contactEmail', 'host'] as const) {
+  for (const field of ['owner', 'ownerLocation', 'host'] as const) {
     if (!SITE[field]) throw new Error(`SITE.${field} is empty. Fill it in src/site.ts, or keep SITE.prototypeNotices true.`);
   }
+  if (!SITE.contactEmail && !SITE.contactUrl) throw new Error('Set SITE.contactEmail or SITE.contactUrl in src/site.ts.');
 }
 
 // <meta name="theme-color">: the light and dark --bg values from src/styles/tokens.css.
