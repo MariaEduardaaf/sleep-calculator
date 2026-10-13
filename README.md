@@ -28,6 +28,7 @@ The time math lives in `src/components/sleep/sleep-math.ts`, with a self-check: 
 
 - [Astro 7](https://astro.build) with static output, plain TypeScript and plain CSS (no UI framework)
 - One design system: tokens in `src/styles/tokens.css`, a component kit in `src/components/ui/`, and Public Sans served through Astro's Fonts API
+- A logo drawn for this product, with the three concepts it was chosen from, in [`docs/brand/`](docs/brand/)
 - Inline SVG icons from [Lucide](https://lucide.dev) (ISC)
 - No tracking and no accounts; anything saved stays in the visitor's browser
 
